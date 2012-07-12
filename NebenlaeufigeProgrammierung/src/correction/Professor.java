@@ -15,7 +15,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class Professor {
 	
-	private CountDownLatch latch; 
+	private CountDownLatch latch; 					  
 	private LinkedList<Assistant> assistants;
 	public static volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
@@ -44,11 +44,11 @@ public class Professor {
 	 * the higher the value distributionFrequency, the more often the prof will even out stacks, value 1 meaning that the prof will do it
 	 * in every iteration of his inner while loop, value 0 meaning that the prof will never do it.
 	 * furthermore, after deciding to distribute, the method will look at the stacks and decide if it really makes sense, and - if it
-	 * does - determine a clever way to do it, i.e. which stack to take exams from etc.
+	 * does - determine a clever way to do it, i.e. which stack to take exams from etc. pp. yadayada
 	 */
 	private void redistribute(){
 		if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
-		//TODO : distribute the exams here
+		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
 	}
@@ -108,22 +108,36 @@ public class Professor {
 				prof.redistribute();					// from time to time even out stacks
 			}
 			
+			// interrupt all assistants so noone has an exam in their hand 
 			for(Thread t: prof.threads){
 				t.interrupt();
 			}
 			
+			// using a latch to make sure that every assistant is actually interrupted before proceeding
 			prof.latch.await();
+			
+			// we assume that no exams are left -> we can terminate
 			terminate = true;
 			for(Assistant a: prof.assistants){
-				// not sure if getLeftStack is right...
+				// TODO: not sure if getLeftStack is right...
+				// if we find an exam, we were wrong and work is not done yet
 				if(!a.getLeftStack().isEmpty()) terminate = false;
 			}
 			
 			//TODO: remove hardcoded value
+			// latch has been used, get a new one
 			prof.latch = new CountDownLatch(4);
 			
 			// wake up threads so they can check whether work is done or not
 			for(Thread t: prof.threads) t.notify();
+			
+			// if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
+			if(terminate){
+				while(!prof.finalstack.isEmpty()){
+					Exam e = prof.finalstack.removeFirst();
+					e.finish();
+				}
+			}
 		}
 
 		

@@ -1,5 +1,13 @@
 package correction;
 
+/**
+ * 
+ * @author Robin Burghartz
+ * 
+ * this counter is read by the professor to determine whether all assistants are idle. we need a separate class because we want to
+ * have a safe monitor object.
+ *
+ */
 public class IdleAssitantsCounter {
 
 	private int n;
