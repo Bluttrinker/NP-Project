@@ -19,8 +19,18 @@ public class Exam {
      */
     private static final int scale_correct = 1000000; 
     private static final int scale_finish   = 100000; 
+    private boolean[] isCorrected; 
+    private boolean isFinished;
 
-	
+	/*TODO: constructor?! where do we save the number of exercises? (i guess we should use a parameter but maybe there is a more elegant
+    way...) */
+    public Exam(){
+    	for(boolean b: isCorrected){
+    		b = false;
+    	}
+    	isFinished = false;
+    }
+    
     /* Rechenleistung verschwenden!
      * (DO NOT CHANGE THIS METHOD)
      */
@@ -77,13 +87,14 @@ public class Exam {
 
     public void correct(int exercise) {
 
-
+    	if(isCorrected[exercise-1]) return;
         Exam.do_correction(); // Beansprucht Prozessorleistung und
 			      // Speicher. Dieser Aufruf muss
 			      // innerhalb der Methode correct
 			      // erfolgen. Sie duerfen (und sollten)
 			      // jedoch beliebigen Programmcode davor
 			      // und danach einfuegen.
+        isCorrected[exercise-1] = true;
 
     }
 
@@ -96,7 +107,10 @@ public class Exam {
 			      // erfolgen. Sie duerfen (und sollten)
 			      // jedoch beliebigen Programmcode davor
 			      // und danach einfuegen.
-
+        isFinished = true;
+        //TODO: what happens with the exams after finishing? are they kept by the professor?
     }
+    
+    //TODO: i'm confused...what else is to do in finish() and correct()??
 }
 
