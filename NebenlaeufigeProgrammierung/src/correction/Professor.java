@@ -18,12 +18,12 @@ public class Professor {
 	private CountDownLatch latch; 
 	private LinkedList<Assistant> assistants;
 	public static volatile boolean terminate = false; // used later to finish work
-	public static int waitingAssistants = 0;
+	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
 	private final float distributionFrequency = 0.2f;
 	private int distributionCounter;
-	private Exam[] exams;
+	private Exam[] exams; 							//TODO: better use a linked list or something as size should not be known in advance
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
-	Thread[] threads;
+	private Thread[] threads;
 	
 	public Professor(int assis, int exams){
 		this.latch = new CountDownLatch(assis);
@@ -79,11 +79,13 @@ public class Professor {
 		while(i<exams.length){
 		for(Assistant a: assistants){
 			if(i>=exams.length) break;
+			//TODO: not sure if this is right...
 			a.getLeftStack().profPush(exams[i]);
 			i++;
 		}
 		}
 	}
+	
 	
 	/**
 	 * @author Robin Burghartz
@@ -100,10 +102,10 @@ public class Professor {
 		while(!terminate){
 			
 			// as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
-			while(waitingAssistants < prof.getAssistants().size()){
+			while(waitingAssistants.getN() < prof.getAssistants().size()){
 				Exam e = prof.finalstack.removeFirst(); // take the first exam of the final stack
 				e.finish();								// FINISH HIM!...ehm...it.
-				prof.redistribute();					// from time to time evn out stacks
+				prof.redistribute();					// from time to time even out stacks
 			}
 			
 			for(Thread t: prof.threads){
@@ -113,7 +115,8 @@ public class Professor {
 			prof.latch.await();
 			terminate = true;
 			for(Assistant a: prof.assistants){
-				if(!a.getLeftStack.isEmpty) terminate = false;
+				// not sure if getLeftStack is right...
+				if(!a.getLeftStack().isEmpty()) terminate = false;
 			}
 			
 			//TODO: remove hardcoded value
@@ -128,6 +131,8 @@ public class Professor {
 		
 	}
 
+	// getters and setters
+	
 	public CountDownLatch getLatch() {
 		return latch;
 	}
