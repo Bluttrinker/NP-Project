@@ -12,6 +12,7 @@ public class Assistant implements Runnable {
 
     private int assignedExercise;
 
+
     public Assistant(int assignedExercise) {
         this.assignedExercise = assignedExercise;
     }
