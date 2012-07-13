@@ -9,7 +9,10 @@ package correction;
  * @author bluttrinker
  */
 public class Professor {
-    
+   private static boolean terminate;
+   public static synchronized boolean shouldTerminate(){
+       return terminate;
+   } 
     
     
 }

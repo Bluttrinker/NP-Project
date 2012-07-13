@@ -5,6 +5,7 @@
 package correction;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -21,6 +22,8 @@ public class ExamStack {
     private final Condition assiStackNotEmpty;
     private ArrayList<Exam> profStack;
     private final Lock profLock = new ReentrantLock();
+    
+    private final int BUFFER_SIZE = 5;
 
     /**
      * Creates a new ExamStack filled with the list of exams given in the
@@ -125,12 +128,44 @@ public class ExamStack {
         //We need both locks!
         assiLock.lock();
         profLock.lock();
+        try{
+            //if both are empty, skip the rest.
+            if(!assiStack.isEmpty() || !profStack.isEmpty()){
+                if(assiStack.isEmpty()){
+                    //ok, so assi Stack is empty, prof Stack not.
+                    //put some elements on the assiStack.
+                    fillAssiStack();
+                }else{
+                    //then prof stack must be empty, check this!
+                    if(!profStack.isEmpty())
+                        throw new IllegalArgumentException("One of the two stacks has to be empty!");
+                    //ok, so prof stack is empty, but assi stack is not.
+                    //put all elements on the prof stack
+                    profStack = assiStack;
+                    assiStack.clear();
+                    //now put some back on the assiStack
+                    fillAssiStack();           
+                    
+                }
+            
+            }            
+            
+        }finally{
+            //give locks back no matter what
+            assiLock.unlock();
+            profLock.unlock();
+        }
         
+    
         
-        
-        
-        
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("not supported yet");
+    }
+    private void fillAssiStack(){    
+        int movedElements =0;
+                    Iterator iter = profStack.iterator();
+                    while(movedElements<BUFFER_SIZE && iter.hasNext()){
+                        Exam e = (Exam)iter.next();
+                        assiStack.add(e);                        
+                    }
+                    profStack.removeAll(assiStack);
     }
 }

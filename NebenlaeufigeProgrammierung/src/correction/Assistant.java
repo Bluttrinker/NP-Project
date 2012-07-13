@@ -20,8 +20,14 @@ public class Assistant implements Runnable {
     
     @Override
     public void run() {
-        //TODO: Implement this method
-        throw new UnsupportedOperationException("Not supported yet.");
+        while(!Professor.shouldTerminate()){
+            while(!Thread.interrupted()){
+                
+            }
+            
+            
+        }
+       //terminate
     }
     
 }
