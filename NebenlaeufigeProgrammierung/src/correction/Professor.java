@@ -19,9 +19,9 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private static volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
-	private final float distributionFrequency = 0.2f;
+	private final float distributionFrequency = 0.2f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;
-	private Exam[] exams; 
+	private Exam[] exams;    //TODO: do we really need this? we might just construct the exams when initializing the assistants...
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
@@ -177,6 +177,10 @@ public class Professor {
    
    private static synchronized void done(boolean b){
 	   terminate = b;
+   }
+   
+   public synchronized void countdownLatch(){
+	   latch.countDown();
    }
     
     
