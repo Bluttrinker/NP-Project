@@ -12,12 +12,14 @@ public class Assistant implements Runnable {
 
     private int assignedExercise;
     private ExamStack left, right;
+    private Professor prof;
 
 
-    public Assistant(int assignedExercise, ExamStack l, ExamStack r) {
+    public Assistant(int assignedExercise, ExamStack l, ExamStack r, Professor p) {
         this.assignedExercise = assignedExercise;
         this.left = l;
         this.right = r;
+        this.prof = p;
     }
     
     
@@ -35,13 +37,19 @@ public class Assistant implements Runnable {
             	}
                 e.correct(assignedExercise);
                 if(e.isCorrected()){
-                	//TODO: put it on the prof's stack here
+                	// TODO: 
                 }
                 else {
                 	left.assiPush(e);
                 }
             }
-            
+            prof.countdownLatch();
+            try{
+            	wait(); //TODO : check a condition here?!
+            }
+            catch(InterruptedException ex){
+            	//TODO  how do we catch it?
+            }
             
         }
        //terminate

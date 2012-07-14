@@ -33,7 +33,7 @@ public class Professor {
 		this.distributionCounter = 1;
 		for(int i=0; i<assis; i++){
 			// TODO: maybe put this in initialize() 
-			this.assistants.add(new Assistant(i+1, stacks[i], stacks[i-1>=0? i-1 : assis-1] ));
+			this.assistants.add(new Assistant(i+1, stacks[i], stacks[i-1>=0? i-1 : assis-1], this ));
 		}
 		this.exams = new Exam[exams];
 	}
@@ -94,7 +94,11 @@ public class Professor {
 	 */
 	public static void main(String args[]){
 		
+		int assis, exams;
 		//TODO: remove hardcoded values, implement with arguments
+		for(int i=0; i<args.length; i++){
+			
+		}
 		Professor prof = new Professor(4,200);
 		prof.divide();
 		prof.initialize();
@@ -183,5 +187,6 @@ public class Professor {
 	   latch.countDown();
    }
     
+   public 
     
 }
