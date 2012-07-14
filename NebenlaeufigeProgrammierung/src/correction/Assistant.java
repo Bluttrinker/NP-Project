@@ -11,10 +11,13 @@ package correction;
 public class Assistant implements Runnable {
 
     private int assignedExercise;
+    private ExamStack left, right;
 
 
-    public Assistant(int assignedExercise) {
+    public Assistant(int assignedExercise, ExamStack l, ExamStack r) {
         this.assignedExercise = assignedExercise;
+        this.left = l;
+        this.right = r;
     }
     
     
