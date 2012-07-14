@@ -76,7 +76,7 @@ public class ExamStack {
             assiLock.lock();
             //Is it still empty?
             if (assiStack.isEmpty()) //Wait for the stack to be not empty
-            {
+            {                
             	Professor.waitingAssistants.increment();
                 assiStackNotEmpty.await();
                 Professor.waitingAssistants.decrement();
@@ -170,6 +170,14 @@ public class ExamStack {
                         assiStack.add(e);                        
                     }
                     profStack.removeAll(assiStack);
+    }
+    
+    public void assiLock(){        
+        assiLock.lock();
+    }
+    
+    public void returnAssiLock(){
+        assiLock.unlock();
     }
     
     public boolean isEmpty(){
