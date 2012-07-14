@@ -129,8 +129,11 @@ public class Professor {
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
-			for(Thread t: prof.threads){
+			for(int i=0; i<prof.threads.length; i++){
+                                Thread t = prof.threads[i];
+                                prof.stacks[i-1>=0? i-1 : assis-1].assiLock();
 				t.interrupt();
+                                prof.stacks[i-1>=0? i-1 : assis-1].returnAssiLock();
 			}
 			
 			// using a latch to make sure that every assistant is actually interrupted before proceeding
