@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Project;
+package correction;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -17,17 +17,19 @@ public class Professor {
 	
 	private CountDownLatch latch; 					  
 	private LinkedList<Assistant> assistants;
-	public static volatile boolean terminate = false; // used later to finish work
+	private static volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
 	private final float distributionFrequency = 0.2f;
 	private int distributionCounter;
-	private Exam[] exams; 							
+	private Exam[] exams; 
+	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
 	
 	public Professor(int assis, int exams){
 		this.latch = new CountDownLatch(assis);
 		this.assistants = new LinkedList<Assistant>();
+		this.stacks = new ExamStack[assis];
 		this.distributionCounter = 1;
 		for(int i=0; i<assis; i++){
 			//TODO: need to give assistants a reference to their exam stacks, however I need two more parameters in the assistant's constr.
@@ -77,10 +79,9 @@ public class Professor {
 		int i=0;
 		
 		while(i<exams.length){
-		for(Assistant a: assistants){
+		for(int j=0; j<stacks.length;j++){
 			if(i>=exams.length) break;
-			//TODO: not sure if this is right...
-			a.getLeftStack().profPush(exams[i]);
+			stacks[j].profPush(exams[i]);
 			i++;
 		}
 		}
@@ -118,10 +119,10 @@ public class Professor {
 			
 			// we assume that no exams are left -> we can terminate
 			terminate = true;
-			for(Assistant a: prof.assistants){
+			for(int i=0; i<prof.stacks.length;i++){
 				// TODO: not sure if getLeftStack is right...
 				// if we find an exam, we were wrong and work is not done yet
-				if(!a.getLeftStack().isEmpty()) terminate = false;
+				if(prof.stacks[i].isEmpty()) terminate = false;
 			}
 			
 			//TODO: remove hardcoded value
@@ -170,6 +171,10 @@ public class Professor {
 	public void setExams(Exam[] exams) {
 		this.exams = exams;
 	}
+
+   public static synchronized boolean shouldTerminate(){
+       return terminate;
+   } 
     
     
 }
