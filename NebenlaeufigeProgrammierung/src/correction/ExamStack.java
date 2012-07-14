@@ -168,4 +168,18 @@ public class ExamStack {
                     }
                     profStack.removeAll(assiStack);
     }
+    
+    public boolean isEmpty(){
+    	assiLock.lock();
+    	profLock.lock();
+    	boolean b;
+    	try{
+    		b = profStack.isEmpty() && assiStack.isEmpty();
+    	}
+    	finally{
+    		assiLock.unlock();
+    		profLock.unlock();
+    	}
+    	return b;
+    }
 }
