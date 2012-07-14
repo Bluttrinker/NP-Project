@@ -51,6 +51,7 @@ public class ExamStack {
         //push exam
         try {
             assiStack.add(exam);
+            assiStackNotEmpty.signalAll();
         } finally {
             assiLock.unlock();
         }
@@ -76,7 +77,9 @@ public class ExamStack {
             //Is it still empty?
             if (assiStack.isEmpty()) //Wait for the stack to be not empty
             {
+            	Professor.waitingAssistants.increment();
                 assiStackNotEmpty.await();
+                Professor.waitingAssistants.decrement();
             }
         }
         //ok, the stack is not empty and we have the lock, so take an element!

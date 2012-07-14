@@ -27,7 +27,8 @@ public class Assistant implements Runnable {
     @Override
     public void run() {
         while(!Professor.shouldTerminate()){
-            while(!Thread.interrupted()){
+            
+        	while(!Thread.interrupted()){
             	Exam e;
             	try{
                 e = right.assiPop();
@@ -37,22 +38,29 @@ public class Assistant implements Runnable {
             	}
                 e.correct(assignedExercise);
                 if(e.isCorrected()){
-                	// TODO: 
+                	prof.pushFinalStack(e);
                 }
                 else {
                 	left.assiPush(e);
                 }
+                
             }
+        	
+        	synchronized(this){
             prof.countdownLatch();
+            
             try{
-            	wait(); //TODO : check a condition here?!
-            }
+            	wait(); 
+            	}
+            
             catch(InterruptedException ex){
-            	//TODO  how do we catch it?
+            	throw new IllegalStateException("bla");
             }
+        
             
         }
-       //terminate
     }
+        prof.countdownLatch();
     
+}
 }

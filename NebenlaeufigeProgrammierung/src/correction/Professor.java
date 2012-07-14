@@ -4,6 +4,7 @@
  */
 package correction;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
@@ -19,9 +20,8 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private static volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
-	private final float distributionFrequency = 0.2f; //TODO using a float here will cause problems, change that
-	private int distributionCounter;
-	private Exam[] exams;    //TODO: do we really need this? we might just construct the exams when initializing the assistants...
+	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
+	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
@@ -30,12 +30,15 @@ public class Professor {
 		this.latch = new CountDownLatch(assis);
 		this.assistants = new LinkedList<Assistant>();
 		this.stacks = new ExamStack[assis];
+		for(int j=0; j<stacks.length;j++){
+			stacks[j] = new ExamStack(new ArrayList<Exam>());
+		}
 		this.distributionCounter = 1;
+		this.threads = new Thread[assis];
 		for(int i=0; i<assis; i++){
 			// TODO: maybe put this in initialize() 
 			this.assistants.add(new Assistant(i+1, stacks[i], stacks[i-1>=0? i-1 : assis-1], this ));
 		}
-		this.exams = new Exam[exams];
 	}
     
 	/**
@@ -70,20 +73,18 @@ public class Professor {
 		}
 	}
 	
+	
 	/**
 	 * @author Robin Burghartz
 	 * divides the exams into equal exam stacks (at the beginning)
 	 */
-	private void divide(){
+	private void divide(int exams, int exerc){
 		
-		int i=0;
 		
-		while(i<exams.length){
-		for(int j=0; j<stacks.length;j++){
-			if(i>=exams.length) break;
-			stacks[j].profPush(exams[i]);
-			i++;
-		}
+		int j = 0;
+		for(int i=0; i<exams; i++){
+			stacks[j].profPush(new Exam(exerc));
+			j = (j+1)%stacks.length;
 		}
 	}
 	
@@ -96,11 +97,22 @@ public class Professor {
 		
 		int assis, exams;
 		//TODO: remove hardcoded values, implement with arguments
-		for(int i=0; i<args.length; i++){
-			
+		if(args.length ==0){
+			assis = 4;
+			exams = 200;
+			System.out.println("Using default values: 4 exercises, 200 exams");
+			System.out.println(""); //TODO
 		}
-		Professor prof = new Professor(4,200);
-		prof.divide();
+		else if(args.length == 2){
+			assis = Integer.parseInt(args[0]);
+			exams = Integer.parseInt(args[1]);
+		}
+		else{
+			throw new IllegalArgumentException("illegal no of arguments");
+		}
+		
+		Professor prof = new Professor(assis,exams);
+		prof.divide(exams,assis);
 		prof.initialize();
 		
 		// as long as work is not done yet, do this
@@ -108,8 +120,10 @@ public class Professor {
 			
 			// as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
 			while(waitingAssistants.getN() < prof.getAssistants().size()){
-				Exam e = prof.finalstack.removeFirst(); // take the first exam of the final stack
-				e.finish();								// FINISH HIM!...ehm...it.
+				if(!prof.finalstack.isEmpty()){
+					Exam e = prof.finalstack.removeFirst(); // take the first exam of the final stack
+					e.finish();							// FINISH HIM!...ehm...it.
+				}
 				prof.redistribute();					// from time to time even out stacks
 			}
 			
@@ -119,7 +133,11 @@ public class Professor {
 			}
 			
 			// using a latch to make sure that every assistant is actually interrupted before proceeding
-			prof.latch.await();
+			try {
+				prof.latch.await();
+			} catch (InterruptedException e1) {
+				throw new IllegalStateException("bla");
+			}
 			
 			// we assume that no exams are left -> we can terminate
 			done(true);
@@ -130,10 +148,15 @@ public class Professor {
 			
 			//TODO: remove hardcoded value
 			// latch has been used, get a new one
-			prof.latch = new CountDownLatch(4);
+			prof.latch = new CountDownLatch(assis);
 			
 			// wake up threads so they can check whether work is done or not
-			for(Thread t: prof.threads) t.notify();
+			for(Assistant a: prof.assistants){
+				synchronized(a){
+					a.notifyAll();
+				}
+				
+			}
 			
 			// if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
 			if(shouldTerminate()){
@@ -142,6 +165,13 @@ public class Professor {
 					e.finish();
 				}
 			}
+			
+			try {
+				prof.latch.await();
+			} catch (InterruptedException e) {
+				throw new IllegalStateException();
+			}
+			prof.latch = new CountDownLatch(assis);
 		}
 
 		
@@ -167,13 +197,6 @@ public class Professor {
 		this.assistants = assistants;
 	}
 
-	public Exam[] getExams() {
-		return exams;
-	}
-
-	public void setExams(Exam[] exams) {
-		this.exams = exams;
-	}
 
    public static synchronized boolean shouldTerminate(){
        return terminate;
@@ -187,6 +210,8 @@ public class Professor {
 	   latch.countDown();
    }
     
-   public 
+   public void pushFinalStack(Exam e){
+	   finalstack.addLast(e);
+   }
     
 }
