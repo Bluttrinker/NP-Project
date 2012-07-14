@@ -32,8 +32,8 @@ public class Professor {
 		this.stacks = new ExamStack[assis];
 		this.distributionCounter = 1;
 		for(int i=0; i<assis; i++){
-			//TODO: need to give assistants a reference to their exam stacks, however I need two more parameters in the assistant's constr.
-			this.assistants.add(new Assistant(i));
+			// TODO: maybe put this in initialize() 
+			this.assistants.add(new Assistant(i+1, stacks[i], stacks[i-1>=0? i-1 : assis-1] ));
 		}
 		this.exams = new Exam[exams];
 	}
