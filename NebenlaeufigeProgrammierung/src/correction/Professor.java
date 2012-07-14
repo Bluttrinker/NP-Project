@@ -25,6 +25,7 @@ public class Professor {
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
+	private CountDownLatch terminate_latch;
 	
 	public Professor(int assis, int exams){
 		this.latch = new CountDownLatch(assis);
@@ -166,13 +167,16 @@ public class Professor {
 				}
 			}
 			
-			try {
-				prof.latch.await();
-			} catch (InterruptedException e) {
-				throw new IllegalStateException();
-			}
-			prof.latch = new CountDownLatch(assis);
+			
 		}
+		
+		// when the professor wants to terminate, wait for other threads to terminate first
+		try {
+			prof.latch.await();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException();
+		}
+		prof.latch = new CountDownLatch(assis);
 
 		
 		
