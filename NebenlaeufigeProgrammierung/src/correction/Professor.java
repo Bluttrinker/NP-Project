@@ -21,7 +21,7 @@ public class Professor {
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
 	private final float distributionFrequency = 0.2f;
 	private int distributionCounter;
-	private Exam[] exams; 							//TODO: better use a linked list or something as size should not be known in advance
+	private Exam[] exams; 							
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
 	
