@@ -100,7 +100,7 @@ public class Professor {
 		prof.initialize();
 		
 		// as long as work is not done yet, do this
-		while(!terminate){
+		while(!shouldTerminate()){
 			
 			// as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
 			while(waitingAssistants.getN() < prof.getAssistants().size()){
@@ -118,11 +118,10 @@ public class Professor {
 			prof.latch.await();
 			
 			// we assume that no exams are left -> we can terminate
-			terminate = true;
+			done(true);
 			for(int i=0; i<prof.stacks.length;i++){
-				// TODO: not sure if getLeftStack is right...
 				// if we find an exam, we were wrong and work is not done yet
-				if(prof.stacks[i].isEmpty()) terminate = false;
+				if(!prof.stacks[i].isEmpty()) done(false);
 			}
 			
 			//TODO: remove hardcoded value
@@ -133,7 +132,7 @@ public class Professor {
 			for(Thread t: prof.threads) t.notify();
 			
 			// if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
-			if(terminate){
+			if(shouldTerminate()){
 				while(!prof.finalstack.isEmpty()){
 					Exam e = prof.finalstack.removeFirst();
 					e.finish();
@@ -175,6 +174,10 @@ public class Professor {
    public static synchronized boolean shouldTerminate(){
        return terminate;
    } 
+   
+   private static synchronized void done(boolean b){
+	   terminate = b;
+   }
     
     
 }
