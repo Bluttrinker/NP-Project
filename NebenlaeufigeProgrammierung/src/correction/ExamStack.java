@@ -193,4 +193,18 @@ public class ExamStack {
     	}
     	return b;
     }
+    
+    public int getSize(){
+    	assiLock.lock();
+    	profLock.lock();
+    	int n;
+    	try{
+    		n = assiStack.size() + profStack.size();
+    	}
+    	finally{
+    		assiLock.unlock();
+    		profLock.unlock();
+    	}
+    	return n;
+    }
 }

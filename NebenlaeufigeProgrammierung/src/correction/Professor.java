@@ -25,7 +25,6 @@ public class Professor {
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
 	private Thread[] threads;
-	private CountDownLatch terminate_latch;
 	
 	public Professor(int assis, int exams){
 		this.latch = new CountDownLatch(assis);
@@ -54,6 +53,19 @@ public class Professor {
 	 */
 	private void redistribute(){
 		if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
+		if(waitingAssistants.getN() < 1) return;
+		
+		// looking for the biggest stack
+		int biggest_stack = 0;
+		int smallest_stack = Integer.MAX_VALUE;
+		for(int i=0; i< stacks.length; i++){
+			if(stacks[i].getSize() > biggest_stack) biggest_stack = i;
+			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
+		}
+		
+		for(int j = biggest_stack; j > biggest_stack / 2; j--){
+			stacks[smallest_stack].profPush(stacks[biggest_stack].profPull());
+		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
@@ -99,8 +111,8 @@ public class Professor {
 		int assis, exams;
 		//TODO: remove hardcoded values, implement with arguments
 		if(args.length ==0){
-			assis = 4;
-			exams = 200;
+			assis = 10;
+			exams = 1000;
 			System.out.println("Using default values: 4 exercises, 200 exams");
 			System.out.println(""); //TODO
 		}
@@ -180,7 +192,7 @@ public class Professor {
 			throw new IllegalStateException();
 		}
 		prof.latch = new CountDownLatch(assis);
-
+		
 		
 		
 		
