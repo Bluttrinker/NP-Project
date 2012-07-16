@@ -63,26 +63,24 @@ public class Professor {
 			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
 		}
 		
-<<<<<<< HEAD
+
 		// pushing exams on the smallest stack
 		for(int j = biggest_stack; j > (biggest_stack / 2); j--){
-			Exam e = stacks[biggest_stack].profPull();
-			if(e != null){
-			stacks[smallest_stack].profPush(e);
-			}
-=======
+			
 		Exam e = stacks[biggest_stack].profPull();
 		while(e!=null){
-			if(e.exercisesToDo().contains(smallest_stack)){
+			
+			if(e.exercisesToDo().contains(smallest_stack + 1)){
 				stacks[smallest_stack].profPush(e);
 			}
 			
 			e=stacks[biggest_stack].profPull();
->>>>>>> 05c3f3c6d075a8f00c3b0d5bf8464ad609382c95
+
 		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
+		}
 	}
 	
 	
