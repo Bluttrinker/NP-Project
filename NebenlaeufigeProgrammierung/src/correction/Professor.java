@@ -53,6 +53,24 @@ public class Professor {
 	 */
 	private void redistribute(){
 		if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
+		if(waitingAssistants.getN() < 1) return;
+		
+		// looking for the biggest stack
+		int biggest_stack = 0;
+		int smallest_stack = Integer.MAX_VALUE;
+		for(int i=0; i< stacks.length; i++){
+			if(stacks[i].getSize() > biggest_stack) biggest_stack = i;
+			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
+		}
+		
+		Exam e = stack[biggest_stack].profPull();
+		while(e!=null){
+			if(e.exercisesToDo().contains(smallest_stack)){
+				stacks[smallest_stack].profPush(e);
+			}
+			
+			e=stack[biggest_stack].profPull();
+		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
@@ -98,7 +116,11 @@ public class Professor {
 		int assis, exams;
 		//TODO: remove hardcoded values, implement with arguments
 		if(args.length ==0){
+<<<<<<< HEAD
 			assis = 5;
+=======
+			assis = 10;
+>>>>>>> 75abf0d6d8d277fca2853aa22cdfac67b81a1746
 			exams = 1000;
 			System.out.println("Using default values: 4 exercises, 200 exams");
 			System.out.println(""); //TODO
@@ -169,14 +191,17 @@ public class Professor {
 				}
 			}
 			
-			try {
-				prof.latch.await();
-			} catch (InterruptedException e) {
-				throw new IllegalStateException();
-			}
-			prof.latch = new CountDownLatch(assis);
+			
 		}
-
+		
+		// when the professor wants to terminate, wait for other threads to terminate first
+		try {
+			prof.latch.await();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException();
+		}
+		prof.latch = new CountDownLatch(assis);
+		
 		
 		
 		

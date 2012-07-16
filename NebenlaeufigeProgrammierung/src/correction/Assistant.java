@@ -36,6 +36,7 @@ public class Assistant implements Runnable {
             	catch(InterruptedException ex){
             		break;
             	}
+            	
                 e.correct(assignedExercise);
                 if(e.isCorrected()){
                 	prof.pushFinalStack(e);

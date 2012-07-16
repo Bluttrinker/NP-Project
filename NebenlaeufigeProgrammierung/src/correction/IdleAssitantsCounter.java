@@ -11,11 +11,9 @@ package correction;
 public class IdleAssitantsCounter {
 
 	private int n;
-	public static volatile boolean terminate;
 	
 	public IdleAssitantsCounter(){
 		this.n = 0;
-		terminate = false;
 	}
 	
 	public synchronized void increment(){
