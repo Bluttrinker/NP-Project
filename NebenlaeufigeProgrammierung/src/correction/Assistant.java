@@ -55,7 +55,7 @@ public class Assistant implements Runnable {
                         }
                        
                 }
-                }
+                
             }
         	
         	synchronized(this){
