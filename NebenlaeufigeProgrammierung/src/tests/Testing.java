@@ -19,7 +19,7 @@ public class Testing {
        String[] arguments = new String[2];
        arguments[0]= "5";
        arguments[1]= "1000";
-        for(int i=0; i<=20; i++){
+        for(int i=0; i<=10; i++){
             System.out.println("run nr"+i);
               Professor.main(arguments);
         }

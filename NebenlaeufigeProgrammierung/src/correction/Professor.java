@@ -18,7 +18,7 @@ public class Professor {
 	
 	private CountDownLatch latch; 					  
 	private LinkedList<Assistant> assistants;
-	private static volatile boolean terminate = false; // used later to finish work
+	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
 	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
@@ -54,7 +54,7 @@ public class Professor {
 	private void redistribute(){
 		if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
 		if(waitingAssistants.getN() < 1) return;
-		
+		//System.out.println("redistributing");
 		// looking for the biggest stack
 		int biggest_stack = 0;
 		int smallest_stack = Integer.MAX_VALUE;
@@ -136,7 +136,7 @@ public class Professor {
 		prof.initialize();
 		
 		// as long as work is not done yet, do this
-		while(!shouldTerminate()){
+		while(!prof.shouldTerminate()){
 			
 			// as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
 			while(waitingAssistants.getN() < prof.getAssistants().size()){
@@ -163,10 +163,10 @@ public class Professor {
 			}
 			
 			// we assume that no exams are left -> we can terminate
-			done(true);
+			prof.done(true);
 			for(int i=0; i<prof.stacks.length;i++){
 				// if we find an exam, we were wrong and work is not done yet
-				if(!prof.stacks[i].isEmpty()) done(false);
+				if(!prof.stacks[i].isEmpty()) prof.done(false);
 			}
 			
 			//TODO: remove hardcoded value
@@ -182,7 +182,7 @@ public class Professor {
 			}
 			
 			// if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
-			if(shouldTerminate()){
+			if(prof.shouldTerminate()){
 				while(!prof.finalstack.isEmpty()){
 					Exam e = prof.finalstack.removeFirst();
 					e.finish();
@@ -204,6 +204,8 @@ public class Professor {
 		
 		
 	}
+        
+        
 
 	// getters and setters
 	
@@ -224,11 +226,11 @@ public class Professor {
 	}
 
 
-   public static synchronized boolean shouldTerminate(){
+   public synchronized boolean shouldTerminate(){
        return terminate;
    } 
    
-   private static synchronized void done(boolean b){
+   private synchronized void done(boolean b){
 	   terminate = b;
    }
    
