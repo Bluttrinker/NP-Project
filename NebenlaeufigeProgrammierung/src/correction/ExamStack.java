@@ -55,7 +55,7 @@ public class ExamStack {
         } finally {
             assiLock.unlock();
         }
-
+        
     }
 
     /**Takes an exam from the step and returns it
@@ -71,9 +71,7 @@ public class ExamStack {
         try{
         while (assiStack.isEmpty()) {
             //Maybe there is still something on the profstack
-            assiLock.unlock();
             distribute();
-            assiLock.lock();
             //Is it still empty?
             if (assiStack.isEmpty()) //Wait for the stack to be not empty
             {                
@@ -83,11 +81,13 @@ public class ExamStack {
             }
         }
         //ok, the stack is not empty and we have the lock, so take an element!
+        //assiStack.r
         exam = assiStack.remove(0);
         }finally{
          try{
               assiLock.unlock(); 
          }catch(IllegalMonitorStateException e){
+             System.out.println("illegalmonitorexception in AssiPop!");
              //it's ok, we never had the lock, so we don't need to give it back.
          }
              
@@ -143,6 +143,7 @@ public class ExamStack {
                     //ok, so assi Stack is empty, prof Stack not.
                     //put some elements on the assiStack.
                     fillAssiStack();
+                    
                 }else{
                     //then prof stack must be empty, check this!
                     if(!profStack.isEmpty())
@@ -160,11 +161,12 @@ public class ExamStack {
             
         }finally{
             //give locks back no matter what
+            assiStackNotEmpty.signalAll();
             assiLock.unlock();
             profLock.unlock();
         }
         
-    
+
         
     }
     private void fillAssiStack(){    

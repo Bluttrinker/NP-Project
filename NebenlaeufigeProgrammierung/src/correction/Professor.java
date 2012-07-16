@@ -7,6 +7,7 @@ package correction;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -63,25 +64,31 @@ public class Professor {
 			if(stacks[i].getSize() > biggest_stack) biggest_stack = i;
 			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
 		}
-		
-
-		// pushing exams on the smallest stack
-		for(int j = biggest_stack; j > (biggest_stack / 2); j--){
+		if(biggest_stack==smallest_stack) return;
 			
 		Exam e = stacks[biggest_stack].profPull();
+                List<Exam> rejectedExams = new LinkedList<Exam>();
 		while(e!=null){
 			
 			if(e.exercisesToDo().contains(smallest_stack + 1)){
 				stacks[smallest_stack].profPush(e);
-			}
+			}else{
+                            rejectedExams.add(e);
+                        }
 			
 			e=stacks[biggest_stack].profPull();
 
 		}
+                //put other exams back
+                for(Exam ex: rejectedExams){
+                    stacks[biggest_stack].profPush(ex);
+                }
+                
+                
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
-		}
+		
 	}
 	
 	
