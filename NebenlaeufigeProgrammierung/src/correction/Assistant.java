@@ -4,6 +4,9 @@
  */
 package correction;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author bluttrinker
@@ -42,7 +45,17 @@ public class Assistant implements Runnable {
                 	prof.pushFinalStack(e);
                 }
                 else {
-                	left.assiPush(e);
+                        boolean pushingfailed = true;
+                        while(pushingfailed){
+                        try {
+                            left.assiPush(e);
+                            pushingfailed = false;
+                        } catch (InterruptedException ex) {
+                            System.out.println("arr");
+                            pushingfailed=true;
+                        }     
+                        }
+                       
                 }
                 }
             }

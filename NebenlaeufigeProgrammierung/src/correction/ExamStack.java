@@ -68,7 +68,7 @@ public class ExamStack {
         Exam exam;
         //Lock Assi Stack
         assiLock.lock();
-        
+        try{
         while (assiStack.isEmpty()) {
             //Maybe there is still something on the profstack
             assiLock.unlock();
@@ -84,9 +84,14 @@ public class ExamStack {
         }
         //ok, the stack is not empty and we have the lock, so take an element!
         exam = assiStack.remove(0);
-        
-          assiLock.unlock();  
-        
+        }finally{
+         try{
+              assiLock.unlock(); 
+         }catch(IllegalMonitorStateException e){
+             //it's ok, we never had the lock, so we don't need to give it back.
+         }
+             
+        }
         //we removed the exam, we can now give back the lock
         if(exam!=null)
             return exam;

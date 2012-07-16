@@ -20,7 +20,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
-	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -51,8 +51,9 @@ public class Professor {
 	 * furthermore, after deciding to distribute, the method will look at the stacks and decide if it really makes sense, and - if it
 	 * does - determine a clever way to do it, i.e. which stack to take exams from etc. pp. yadayada
 	 */
-	private void redistribute(){
-		if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
+	private void redistribute() throws InterruptedException{
+	
+            if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
 		if(waitingAssistants.getN() < 1) return;
 		//System.out.println("redistributing");
 		// looking for the biggest stack
@@ -118,7 +119,7 @@ public class Professor {
 	 * @author Robin Burghartz
 	 * @param args
 	 */
-	public static void main(String args[]){
+	public static void main(String args[]) throws InterruptedException{
 		
 		int assis, exams;
 		long runtime = System.currentTimeMillis();
