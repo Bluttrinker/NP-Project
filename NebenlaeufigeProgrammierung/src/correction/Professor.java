@@ -20,7 +20,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private static volatile boolean terminate = false; // used later to finish work
 	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
-	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -63,8 +63,12 @@ public class Professor {
 			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
 		}
 		
-		for(int j = biggest_stack; j > biggest_stack / 2; j--){
-			stacks[smallest_stack].profPush(stacks[biggest_stack].profPull());
+		// pushing exams on the smallest stack
+		for(int j = biggest_stack; j > (biggest_stack / 2); j--){
+			Exam e = stacks[biggest_stack].profPull();
+			if(e != null){
+			stacks[smallest_stack].profPush(e);
+			}
 		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
@@ -109,12 +113,13 @@ public class Professor {
 	public static void main(String args[]){
 		
 		int assis, exams;
+		long runtime = System.currentTimeMillis();
 		//TODO: remove hardcoded values, implement with arguments
 		if(args.length ==0){
 			assis = 10;
 			exams = 1000;
-			System.out.println("Using default values: 4 exercises, 200 exams");
-			System.out.println(""); //TODO
+			//System.out.println("Using default values: 4 exercises, 200 exams");
+			//System.out.println(""); //TODO
 		}
 		else if(args.length == 2){
 			assis = Integer.parseInt(args[0]);
@@ -192,7 +197,7 @@ public class Professor {
 			throw new IllegalStateException();
 		}
 		prof.latch = new CountDownLatch(assis);
-		
+		System.out.println(System.currentTimeMillis() - runtime);
 		
 		
 		
