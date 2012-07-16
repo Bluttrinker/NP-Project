@@ -46,12 +46,8 @@ public class Assistant implements Runnable {
                 	prof.pushFinalStack(e);
                 }
                 else {
-                        boolean pushingfailed = true;
-                        while(pushingfailed){
-                      
-                            left.assiPush(e);
-                          
-                            
+                        left.assiPush(e);
+                                               
                         }
                        
                 }
