@@ -19,7 +19,7 @@ public class Professor {
 	private CountDownLatch latch; 					  
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
-	public static IdleAssitantsCounter waitingAssistants = new IdleAssitantsCounter();
+	public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
 	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
@@ -197,6 +197,8 @@ public class Professor {
 					e.finish();
 				}
 			}
+                        //reset static variables so that multible runs don't create problems
+                        waitingAssistants = new IdleAssistantsCounter();
 			
 			
 		}

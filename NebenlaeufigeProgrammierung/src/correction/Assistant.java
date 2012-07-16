@@ -50,10 +50,7 @@ public class Assistant implements Runnable {
                         while(pushingfailed){
                       
                             left.assiPush(e);
-                            pushingfailed = false;
-                        
-                            System.out.println("arr");
-                            pushingfailed=true;
+                          
                             
                         }
                        

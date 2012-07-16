@@ -22,6 +22,7 @@ public class Testing {
         for(int i=0; i<=10; i++){
             System.out.println("run nr"+i);
               Professor.main(arguments);
+              
         }
       
         

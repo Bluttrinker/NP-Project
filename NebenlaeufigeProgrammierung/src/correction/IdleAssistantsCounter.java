@@ -8,11 +8,11 @@ package correction;
  * have a safe monitor object.
  *
  */
-public class IdleAssitantsCounter {
+public class IdleAssistantsCounter {
 
 	private int n;
 	
-	public IdleAssitantsCounter(){
+	public IdleAssistantsCounter(){
 		this.n = 0;
 	}
 	
