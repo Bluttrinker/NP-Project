@@ -63,8 +63,13 @@ public class Professor {
 			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
 		}
 		
-		for(int j = biggest_stack; j > biggest_stack / 2; j--){
-			stacks[smallest_stack].profPush(stacks[biggest_stack].profPull());
+		Exam e = stack[biggest_stack].profPull();
+		while(e!=null){
+			if(e.exercisesToDo().contains(smallest_stack)){
+				stacks[smallest_stack].profPush(e);
+			}
+			
+			e=stack[biggest_stack].profPull();
 		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
