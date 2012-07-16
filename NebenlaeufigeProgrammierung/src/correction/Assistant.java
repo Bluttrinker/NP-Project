@@ -26,7 +26,7 @@ public class Assistant implements Runnable {
     
     @Override
     public void run() {
-        while(!Professor.shouldTerminate()){
+        while(!prof.shouldTerminate()){
             
         	while(!Thread.interrupted()){
             	Exam e;
@@ -36,7 +36,7 @@ public class Assistant implements Runnable {
             	catch(InterruptedException ex){
             		break;
             	}
-            	
+            	if(e!=null){
                 e.correct(assignedExercise);
                 if(e.isCorrected()){
                 	prof.pushFinalStack(e);
@@ -44,7 +44,7 @@ public class Assistant implements Runnable {
                 else {
                 	left.assiPush(e);
                 }
-                
+                }
             }
         	
         	synchronized(this){
