@@ -37,6 +37,7 @@ public class Assistant implements Runnable {
                 e = right.assiPop();
             	}
             	catch(InterruptedException ex){
+            		prof.waitingAssistants.decrement();
             		break;
             	}
             	if(e!=null){
