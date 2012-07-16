@@ -63,12 +63,22 @@ public class Professor {
 			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
 		}
 		
+<<<<<<< HEAD
 		// pushing exams on the smallest stack
 		for(int j = biggest_stack; j > (biggest_stack / 2); j--){
 			Exam e = stacks[biggest_stack].profPull();
 			if(e != null){
 			stacks[smallest_stack].profPush(e);
 			}
+=======
+		Exam e = stacks[biggest_stack].profPull();
+		while(e!=null){
+			if(e.exercisesToDo().contains(smallest_stack)){
+				stacks[smallest_stack].profPush(e);
+			}
+			
+			e=stacks[biggest_stack].profPull();
+>>>>>>> 05c3f3c6d075a8f00c3b0d5bf8464ad609382c95
 		}
 		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
@@ -116,7 +126,9 @@ public class Professor {
 		long runtime = System.currentTimeMillis();
 		//TODO: remove hardcoded values, implement with arguments
 		if(args.length ==0){
-			assis = 10;
+
+			assis = 5;
+
 			exams = 1000;
 			//System.out.println("Using default values: 4 exercises, 200 exams");
 			//System.out.println(""); //TODO
