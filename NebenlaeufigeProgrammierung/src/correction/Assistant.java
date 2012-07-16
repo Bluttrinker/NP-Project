@@ -45,16 +45,7 @@ public class Assistant implements Runnable {
                 if(e.isCorrected()){
                 	prof.pushFinalStack(e);
                 }
-                else {
-                        boolean pushingfailed = true;
-                        while(pushingfailed){
-                      
-                            left.assiPush(e);
-                          
-                            
-                        }
-                       
-                }
+                
                 
             }
         	
@@ -75,4 +66,5 @@ public class Assistant implements Runnable {
         prof.countdownLatch();
     
 }
+    }
 }

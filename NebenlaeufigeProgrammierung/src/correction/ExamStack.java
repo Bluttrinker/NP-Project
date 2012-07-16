@@ -132,6 +132,7 @@ public class ExamStack {
         return exam;
     }
 
+    
     private void distribute() {
         //We need both locks!
         assiLock.lock();
