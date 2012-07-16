@@ -150,9 +150,9 @@ public class Professor {
 			while(waitingAssistants.getN() < prof.getAssistants().size()){
 				if(!prof.finalstack.isEmpty()){
 					Exam e = prof.finalstack.removeFirst(); // take the first exam of the final stack
-					e.finish();							// FINISH HIM!...ehm...it.
+					e.finish();								// FINISH HIM!...ehm...it.
 				}
-				prof.redistribute();					// from time to time even out stacks
+				prof.redistribute();						// from time to time even out stacks
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
