@@ -48,13 +48,13 @@ public class Assistant implements Runnable {
                 else {
                         boolean pushingfailed = true;
                         while(pushingfailed){
-                        try {
+                      
                             left.assiPush(e);
                             pushingfailed = false;
-                        } catch (InterruptedException ex) {
+                        
                             System.out.println("arr");
                             pushingfailed=true;
-                        }     
+                            
                         }
                        
                 }

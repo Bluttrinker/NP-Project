@@ -51,7 +51,7 @@ public class Professor {
 	 * furthermore, after deciding to distribute, the method will look at the stacks and decide if it really makes sense, and - if it
 	 * does - determine a clever way to do it, i.e. which stack to take exams from etc. pp. yadayada
 	 */
-	private void redistribute() throws InterruptedException{
+	private void redistribute(){
 	
             if(! ((float) (this.distributionCounter) * this.distributionFrequency == 1.0)) return;
 		if(waitingAssistants.getN() < 1) return;
@@ -119,7 +119,7 @@ public class Professor {
 	 * @author Robin Burghartz
 	 * @param args
 	 */
-	public static void main(String args[]) throws InterruptedException{
+	public static void main(String args[]){
 		
 		int assis, exams;
 		long runtime = System.currentTimeMillis();
