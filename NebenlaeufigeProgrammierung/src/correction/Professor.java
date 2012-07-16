@@ -98,8 +98,8 @@ public class Professor {
 		int assis, exams;
 		//TODO: remove hardcoded values, implement with arguments
 		if(args.length ==0){
-			assis = 4;
-			exams = 200;
+			assis = 5;
+			exams = 1000;
 			System.out.println("Using default values: 4 exercises, 200 exams");
 			System.out.println(""); //TODO
 		}

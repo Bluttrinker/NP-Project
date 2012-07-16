@@ -16,9 +16,12 @@ public class Testing {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       
-        for(int i=0; i<=1000000; i++){
-              Professor.main(args);
+       String[] arguments = new String[2];
+       arguments[0]= "5";
+       arguments[1]= "1000";
+        for(int i=0; i<=20; i++){
+            System.out.println("run nr"+i);
+              Professor.main(arguments);
         }
       
         
