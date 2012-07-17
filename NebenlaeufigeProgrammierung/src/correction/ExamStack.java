@@ -6,6 +6,7 @@ package correction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -17,10 +18,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ExamStack {
 
-    private ArrayList<Exam> assiStack;
+    private LinkedList<Exam> assiStack;
     private final Lock assiLock = new ReentrantLock();
     private final Condition assiStackNotEmpty;
-    private ArrayList<Exam> profStack;
+    private LinkedList<Exam> profStack;
     private final Lock profLock = new ReentrantLock();
     
     private final int BUFFER_SIZE = 5;
@@ -31,11 +32,11 @@ public class ExamStack {
      *
      * @param initialExams The Exams initially contained by this ExamStack.
      */
-    public ExamStack(ArrayList<Exam> initialExams) {
+    public ExamStack(LinkedList<Exam> initialExams) {
         super();
         this.assiStack = initialExams;
         //I want my diamond operator back...
-        this.profStack = new ArrayList<Exam>();
+        this.profStack = new LinkedList<Exam>();
         assiStackNotEmpty = assiLock.newCondition();
     }
 
@@ -116,9 +117,7 @@ public class ExamStack {
         profLock.lock();
         try{
             if(profStack.isEmpty()){
-                profLock.unlock();
-                distribute();
-                profLock.lock();
+                distribute();          // lock & unlock ?!
             }
                 
             if(!profStack.isEmpty())
@@ -126,7 +125,12 @@ public class ExamStack {
                 //for prof the order doesn't matter since he iterates anyways.
                 exam = profStack.remove(profStack.size()-1);
         }finally{
-            profLock.unlock();
+        	try{
+            profLock.unlock();   //TODO : for some reason, it is possible that an exception is thrown here, find out why
+        	}
+        	catch(IllegalMonitorStateException m){
+        		
+        	}
         }
         //Give this back, if it is null the prof knows he saw (almost) the entire stack
         return exam;
@@ -151,7 +155,7 @@ public class ExamStack {
                         throw new IllegalArgumentException("One of the two stacks has to be empty!");
                     //ok, so prof stack is empty, but assi stack is not.
                     //put all elements on the prof stack
-                    profStack = assiStack;
+                    profStack.addAll(assiStack);
                     assiStack.clear();
                     //now put some back on the assiStack
                     fillAssiStack();           
@@ -170,7 +174,9 @@ public class ExamStack {
 
         
     }
-    private void fillAssiStack(){    
+    private void fillAssiStack(){ 
+    	assiLock.lock();
+    	profLock.lock();
         int movedElements =0;
                     Iterator iter = profStack.iterator();
                     while(movedElements<BUFFER_SIZE && iter.hasNext()){
@@ -178,6 +184,8 @@ public class ExamStack {
                         assiStack.add(e);                        
                     }
                     profStack.removeAll(assiStack);
+        assiLock.unlock();
+        profLock.unlock();
     }
     
     public void assiLock(){        

@@ -21,7 +21,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
-	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -32,7 +32,7 @@ public class Professor {
 		this.assistants = new LinkedList<Assistant>();
 		this.stacks = new ExamStack[assis];
 		for(int j=0; j<stacks.length;j++){
-			stacks[j] = new ExamStack(new ArrayList<Exam>());
+			stacks[j] = new ExamStack(new LinkedList<Exam>());
 		}
 		this.distributionCounter = 1;
 		this.threads = new Thread[assis];
