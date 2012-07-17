@@ -68,7 +68,9 @@ public class Professor {
 			
 		Exam e = stacks[biggest_stack].profPull();
                 List<Exam> rejectedExams = new LinkedList<Exam>();
-		while(e!=null){
+                
+        int size = stacks[biggest_stack].getSize();        //TODO : just for debugging
+		while(e!=null && size > 0){
 			
 			if(e.exercisesToDo().contains(smallest_stack + 1)){
 				stacks[smallest_stack].profPush(e);
@@ -77,6 +79,7 @@ public class Professor {
                         }
 			
 			e=stacks[biggest_stack].profPull();
+			size--;
 
 		}
                 //put other exams back
@@ -84,7 +87,7 @@ public class Professor {
                     stacks[biggest_stack].profPush(ex);
                 }
                 
-                
+        stacks[smallest_stack].distribute();        
 		this.distributionCounter = 1;
 		return;
 		

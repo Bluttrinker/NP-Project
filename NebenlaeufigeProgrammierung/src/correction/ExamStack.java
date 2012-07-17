@@ -26,6 +26,7 @@ public class ExamStack {
     
     private final int BUFFER_SIZE = 5;
 
+   
     /**
      * Creates a new ExamStack filled with the list of exams given in the
      * constructor
@@ -40,6 +41,7 @@ public class ExamStack {
         assiStackNotEmpty = assiLock.newCondition();
     }
 
+   
     /**
      * Puts an exam on the ExamStack. This method is to be used by the
      * Assistants
@@ -59,6 +61,7 @@ public class ExamStack {
         
     }
 
+   
     /**Takes an exam from the step and returns it
      * this method is to be called from the Assistants
      * 
@@ -137,7 +140,7 @@ public class ExamStack {
     }
 
     
-    private void distribute() {
+    public void distribute() {  //TODO : set this back to private, only use public for debugging
         //We need both locks!
         assiLock.lock();
         profLock.lock();
@@ -152,7 +155,8 @@ public class ExamStack {
                 }else{
                     //then prof stack must be empty, check this!
                     if(!profStack.isEmpty())
-                        throw new IllegalArgumentException("One of the two stacks has to be empty!");
+                    	return;
+                        //throw new IllegalArgumentException("One of the two stacks has to be empty!"); TODO: actually, thats ok now 
                     //ok, so prof stack is empty, but assi stack is not.
                     //put all elements on the prof stack
                     profStack.addAll(assiStack);
