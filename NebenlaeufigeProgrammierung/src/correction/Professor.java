@@ -21,7 +21,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
-	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -164,7 +164,11 @@ public class Professor {
 					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
-				if(System.currentTimeMillis() - runtime >10000) System.out.println("the error is in the inner while loop");
+				if(System.currentTimeMillis() - runtime >10000){
+                                    System.out.println("the error is in the inner while loop");
+                                    System.out.println("wartende"+waitingAssistants.getN());
+                                    System.out.println("gesamt" +prof.getAssistants().size());
+                                }
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
@@ -180,6 +184,7 @@ public class Professor {
 			// using a latch to make sure that every assistant is actually interrupted before proceeding
 			try {
 				prof.latch.await();
+                                Professor.waitingAssistants.setN(0);
 			} catch (InterruptedException e1) {
 				throw new IllegalStateException("bla");
 			}

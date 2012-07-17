@@ -184,16 +184,20 @@ public class ExamStack {
     }
     private void fillAssiStack(){ 
     	assiLock.lock();
-    	profLock.lock();
-        int movedElements =0;
-                    Iterator iter = profStack.iterator();
-                    while(movedElements<BUFFER_SIZE && iter.hasNext()){
-                        Exam e = (Exam)iter.next();
-                        assiStack.add(e);                        
-                    }
-                    profStack.removeAll(assiStack);
-        assiLock.unlock();
-        profLock.unlock();
+         profLock.lock();
+        try {
+           
+            int movedElements =0;
+            Iterator iter = profStack.iterator();
+            while (movedElements<BUFFER_SIZE && iter.hasNext()) {
+                Exam e = (Exam) iter.next();
+                assiStack.add(e);
+            }
+            profStack.removeAll(assiStack);
+        } finally {
+            assiLock.unlock();
+            profLock.unlock();
+        }
     }
     
     public void assiLock(){        

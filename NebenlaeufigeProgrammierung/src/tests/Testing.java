@@ -18,8 +18,8 @@ public class Testing {
     public static void main(String[] args) {
        String[] arguments = new String[2];
        arguments[0]= "5";
-       arguments[1]= "1000";
-        for(int i=0; i<=10; i++){
+       arguments[1]= "100";
+        for(int i=0; i<=200; i++){
             System.out.println("run nr"+i);
               Professor.main(arguments);
               
