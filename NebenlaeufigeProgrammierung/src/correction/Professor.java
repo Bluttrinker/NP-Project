@@ -37,7 +37,7 @@ public class Professor {
 		this.distributionCounter = 1;
 		this.threads = new Thread[assis];
 		for(int i=0; i<assis; i++){
-			// TODO: maybe put this in initialize() 
+			
 			this.assistants.add(new Assistant(i+1, stacks[i], stacks[i-1>=0? i-1 : assis-1], this ));
 		}
 	}
@@ -85,7 +85,6 @@ public class Professor {
                 }
                 
                 
-		//TODO : distribute the exams here, mayyyyybe do this in a separate distributor class
 		this.distributionCounter = 1;
 		return;
 		
@@ -130,7 +129,7 @@ public class Professor {
 		
 		int assis, exams;
 		long runtime = System.currentTimeMillis();
-		//TODO: remove hardcoded values, implement with arguments
+		
 		if(args.length ==0){
 
 			assis = 5;
@@ -166,7 +165,7 @@ public class Professor {
 			// interrupt all assistants so noone has an exam in their hand 
 			for(int i=0; i<prof.threads.length; i++){
                                 Thread t = prof.threads[i];
-                                prof.stacks[i-1>=0? i-1 : assis-1].assiLock();
+                                prof.stacks[i-1>=0? i-1 : assis-1].assiLock(); //TODO: what is this?
 				t.interrupt();
                                 prof.stacks[i-1>=0? i-1 : assis-1].returnAssiLock();
 			}
@@ -185,7 +184,7 @@ public class Professor {
 				if(!prof.stacks[i].isEmpty()) prof.done(false);
 			}
 			
-			//TODO: remove hardcoded value
+			
 			// latch has been used, get a new one
 			prof.latch = new CountDownLatch(assis);
 			

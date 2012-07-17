@@ -41,13 +41,19 @@ public class Assistant implements Runnable {
             		break;
             	}
             	if(e!=null){
-                e.correct(assignedExercise);
-                if(e.isCorrected()){
-                	prof.pushFinalStack(e);
-                }
+            		e.correct(assignedExercise);
+            		
+            		if(e.isCorrected()){
+            			prof.pushFinalStack(e);
+            		}
+            		
+                	else{
+                	left.assiPush(e);
+                	}
                 
                 
             }
+        	}
         	
         	synchronized(this){
             prof.countdownLatch();
@@ -67,4 +73,4 @@ public class Assistant implements Runnable {
     
 }
     }
-}
+
