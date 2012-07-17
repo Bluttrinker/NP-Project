@@ -87,7 +87,7 @@ public class Professor {
                     stacks[biggest_stack].profPush(ex);
                 }
                 
-        stacks[smallest_stack].distribute();        
+        stacks[smallest_stack].distribute();      //TODO: not supposed to be this way, change it  
 		this.distributionCounter = 1;
 		return;
 		
@@ -164,11 +164,14 @@ public class Professor {
 					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
+
 //				if(System.currentTimeMillis() - runtime >10000){
 //                                    System.out.println("the error is in the inner while loop");
 //                                    System.out.println("wartende"+waitingAssistants.getN());
 //                                    System.out.println("gesamt" +prof.getAssistants().size());
 //                                }
+
+				
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 

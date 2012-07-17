@@ -17,9 +17,12 @@ public class Testing {
      */
     public static void main(String[] args) {
        String[] arguments = new String[2];
-       arguments[0]= "5";
-       arguments[1]= "100";
-        for(int i=0; i<=200; i++){
+
+       arguments[0]= "3";
+       arguments[1]= "70";
+       System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
+        for(int i=0; i<=400; i++){
+
             System.out.println("run nr"+i);
               Professor.main(arguments);
               
