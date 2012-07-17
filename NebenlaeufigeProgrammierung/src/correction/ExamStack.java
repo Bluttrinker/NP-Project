@@ -124,7 +124,9 @@ public class ExamStack {
         profLock.lock();
         try{
             if(profStack.isEmpty()){
+                profLock.unlock();
                 distribute();          // lock & unlock ?!
+                profLock.lock();
             }
                 
             if(!profStack.isEmpty())

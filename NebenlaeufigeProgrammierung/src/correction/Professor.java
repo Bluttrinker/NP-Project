@@ -164,11 +164,11 @@ public class Professor {
 					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
-				if(System.currentTimeMillis() - runtime >10000){
-                                    System.out.println("the error is in the inner while loop");
-                                    System.out.println("wartende"+waitingAssistants.getN());
-                                    System.out.println("gesamt" +prof.getAssistants().size());
-                                }
+//				if(System.currentTimeMillis() - runtime >10000){
+//                                    System.out.println("the error is in the inner while loop");
+//                                    System.out.println("wartende"+waitingAssistants.getN());
+//                                    System.out.println("gesamt" +prof.getAssistants().size());
+//                                }
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
@@ -218,8 +218,8 @@ public class Professor {
 					e.finish();
 				}
 			}
-                        //reset static variables so that multible runs don't create problems
-                        waitingAssistants = new IdleAssistantsCounter();
+                        
+                        
 			
 			
 		}
@@ -234,6 +234,8 @@ public class Professor {
 		prof.latch = new CountDownLatch(assis);
 		System.out.println(System.currentTimeMillis() - runtime);
 		
+                //reset static variables so that multible runs don't create problems
+                waitingAssistants.setN(0);
 		
 		
 	}
