@@ -21,7 +21,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
-	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -87,7 +87,7 @@ public class Professor {
                     stacks[biggest_stack].profPush(ex);
                 }
                 
-        stacks[smallest_stack].distribute();        
+        stacks[smallest_stack].distribute();      //TODO: not supposed to be this way, change it  
 		this.distributionCounter = 1;
 		return;
 		
@@ -164,7 +164,8 @@ public class Professor {
 					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
-				if(System.currentTimeMillis() - runtime >10000) System.out.println("the error is in the inner while loop");
+				if(System.currentTimeMillis() - runtime >10000) System.out.println("Error in inner while loop. Thread 0 is: "+prof.threads[0].getState()+" Last method in vocation: "+
+				prof.threads[0].getStackTrace());
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
