@@ -164,8 +164,16 @@ public class Professor {
 					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
+<<<<<<< HEAD
 				if(System.currentTimeMillis() - runtime >10000) System.out.println("Error in inner while loop. Thread 0 is: "+prof.threads[0].getState()+" Last method in vocation: "+
 				prof.threads[0].getStackTrace());
+=======
+				if(System.currentTimeMillis() - runtime >10000){
+                                    System.out.println("the error is in the inner while loop");
+                                    System.out.println("wartende"+waitingAssistants.getN());
+                                    System.out.println("gesamt" +prof.getAssistants().size());
+                                }
+>>>>>>> cf6b5ac2a885f06d94d46b2fd1702042167fffb0
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
@@ -181,6 +189,7 @@ public class Professor {
 			// using a latch to make sure that every assistant is actually interrupted before proceeding
 			try {
 				prof.latch.await();
+                                Professor.waitingAssistants.setN(0);
 			} catch (InterruptedException e1) {
 				throw new IllegalStateException("bla");
 			}
