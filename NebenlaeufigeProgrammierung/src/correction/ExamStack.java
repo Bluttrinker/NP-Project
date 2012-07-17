@@ -78,10 +78,14 @@ public class ExamStack {
             distribute();
             //Is it still empty?
             if (assiStack.isEmpty()) //Wait for the stack to be not empty
-            {                
+            {    
             	Professor.waitingAssistants.increment();
+            	try{
                 assiStackNotEmpty.await();
+            	}
+            	finally{
                 Professor.waitingAssistants.decrement();
+            	}
             }
         }
         //ok, the stack is not empty and we have the lock, so take an element!

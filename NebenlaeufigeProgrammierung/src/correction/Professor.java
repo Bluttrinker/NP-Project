@@ -21,7 +21,7 @@ public class Professor {
 	private LinkedList<Assistant> assistants;
 	private volatile boolean terminate = false; // used later to finish work
 	public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
-	private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
+	private final float distributionFrequency = 0.0f; //TODO using a float here will cause problems, change that
 	private int distributionCounter;    
 	private ExamStack[] stacks;
 	private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -157,15 +157,18 @@ public class Professor {
 		while(!prof.shouldTerminate()){
 			
 			// as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
+			System.out.println("Starting to finish and redistribute...");
 			while(waitingAssistants.getN() < prof.getAssistants().size()){
 				if(!prof.finalstack.isEmpty()){
 					Exam e = prof.finalstack.removeFirst(); // take the first exam of the final stack
-					e.finish();								// FINISH HIM!...ehm...it.
+					e.finish();	 							// FINISH HIM!...ehm...it.
 				}
 				prof.redistribute();						// from time to time even out stacks
+				if(System.currentTimeMillis() - runtime >10000) System.out.println("the error is in the inner while loop");
 			}
 			
 			// interrupt all assistants so noone has an exam in their hand 
+			System.out.println("Interrupting assistants...");
 			for(int i=0; i<prof.threads.length; i++){
                                 Thread t = prof.threads[i];
                                 prof.stacks[i-1>=0? i-1 : assis-1].assiLock(); //TODO: what is this?
@@ -173,6 +176,7 @@ public class Professor {
                                 prof.stacks[i-1>=0? i-1 : assis-1].returnAssiLock();
 			}
 			
+			System.out.println("Waiting for assistants to be interrupted... (Creating Latch)");
 			// using a latch to make sure that every assistant is actually interrupted before proceeding
 			try {
 				prof.latch.await();
@@ -182,6 +186,7 @@ public class Professor {
 			
 			// we assume that no exams are left -> we can terminate
 			prof.done(true);
+			System.out.println("Checking stacks for missed exams...");
 			for(int i=0; i<prof.stacks.length;i++){
 				// if we find an exam, we were wrong and work is not done yet
 				if(!prof.stacks[i].isEmpty()) prof.done(false);
@@ -191,6 +196,7 @@ public class Professor {
 			// latch has been used, get a new one
 			prof.latch = new CountDownLatch(assis);
 			
+			System.out.println("Work done: "+prof.shouldTerminate()+". Waking up assistants...");
 			// wake up threads so they can check whether work is done or not
 			for(Assistant a: prof.assistants){
 				synchronized(a){
@@ -199,6 +205,7 @@ public class Professor {
 				
 			}
 			
+			System.out.println("Finishing left exams...");
 			// if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
 			if(prof.shouldTerminate()){
 				while(!prof.finalstack.isEmpty()){
@@ -212,6 +219,7 @@ public class Professor {
 			
 		}
 		
+		System.out.println("Work is done. Waiting for assistants to terminate...");
 		// when the professor wants to terminate, wait for other threads to terminate first
 		try {
 			prof.latch.await();
