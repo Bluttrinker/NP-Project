@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author bluttrinker
+ * @author Immo Stanke, Robin Burghartz
  */
 public class Assistant implements Runnable {
 
@@ -37,7 +37,6 @@ public class Assistant implements Runnable {
                 e = right.assiPop();
             	}
             	catch(InterruptedException ex){
-            		// prof.waitingAssistants.decrement();
             		break;
             	}
             	if(e!=null){

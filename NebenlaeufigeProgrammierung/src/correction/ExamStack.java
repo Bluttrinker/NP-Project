@@ -89,7 +89,6 @@ public class ExamStack {
             }
         }
         //ok, the stack is not empty and we have the lock, so take an element!
-        //assiStack.r
         exam = assiStack.remove(0);
         }finally{
          try{
@@ -100,7 +99,6 @@ public class ExamStack {
          }
              
         }
-        //we removed the exam, we can now give back the lock
         if(exam!=null)
             return exam;
         //this case should not happen.
@@ -125,7 +123,7 @@ public class ExamStack {
         try{
             if(profStack.isEmpty()){
                 profLock.unlock();
-                distribute();          // lock & unlock ?!
+                distribute();          
                 profLock.lock();
             }
                 
@@ -135,7 +133,7 @@ public class ExamStack {
                 exam = profStack.remove(profStack.size()-1);
         }finally{
         	try{
-            profLock.unlock();   //TODO : for some reason, it is possible that an exception is thrown here, find out why
+            profLock.unlock();   
         	}
         	catch(IllegalMonitorStateException m){
         		
@@ -146,7 +144,7 @@ public class ExamStack {
     }
 
     
-    public void distribute() {  //TODO : set this back to private, only use public for debugging
+    public void distribute() {  
         //We need both locks!
         assiLock.lock();
         profLock.lock();
@@ -159,7 +157,7 @@ public class ExamStack {
                     fillAssiStack();
                     
                 }else{
-                    //then prof stack must be empty, check this!
+                    // is prof stack empty then?
                     if(!profStack.isEmpty())
                         //so both stacks are not empty, nothing to do here
                     	return;
@@ -184,6 +182,8 @@ public class ExamStack {
 
         
     }
+    
+    
     private void fillAssiStack(){ 
     	assiLock.lock();
          profLock.lock();
@@ -197,7 +197,6 @@ public class ExamStack {
                 iter.remove();
                 movedElements++;
             }
-           // profStack.removeAll(assiStack);
         } finally {
             assiLock.unlock();
             profLock.unlock();
