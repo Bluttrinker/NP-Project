@@ -18,7 +18,7 @@ public class Professor {
     private LinkedList<Assistant> assistants;
     private volatile boolean terminate = false; // used later to finish work
     public static IdleAssistantsCounter waitingAssistants = new IdleAssistantsCounter();
-    private final float distributionFrequency = 1.0f; //TODO using a float here will cause problems, change that
+    private final float distributionFrequency = 1.0f; 
     private int distributionCounter;
     private ExamStack[] stacks;
     private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
@@ -86,17 +86,11 @@ public class Professor {
             sizeToStack.put(size, i);
             //Sum up size.
             sizeSum += (float) size;
-//			if(stacks[i].getSize() > biggest_stack) biggest_stack = i;
-//			if(stacks[i].getSize() < smallest_stack) smallest_stack = i;
         }
         //get average size
         float sizeAverage = sizeSum / (float) stacks.length;
         //sort the sizes
         Arrays.sort(sizeArr);
-
-
-        //if(biggest_stack==smallest_stack) return;
-
         //now, get size of  biggest Stack
         int size = sizeArr[stacks.length - 1];
         //and the biggest Stack itself
@@ -169,7 +163,8 @@ public class Professor {
     }
 
     /**
-     * @author Robin Burghartz iterates through the assistants, creates threads
+     * @author Robin Burghartz
+     *  iterates through the assistants, creates threads
      * for them and starts them
      *
      */
@@ -183,7 +178,8 @@ public class Professor {
     }
 
     /**
-     * @author Robin Burghartz divides the exams into equal exam stacks (at the
+     * @author Robin Burghartz 
+     * divides the exams into equal exam stacks (at the
      * beginning)
      */
     private void divide(int exams, int exerc) {
@@ -207,11 +203,10 @@ public class Professor {
 
         if (args.length == 0) {
 
+        	// without arguments, use default values
             assis = 5;
-
             exams = 1000;
-            //System.out.println("Using default values: 4 exercises, 200 exams");
-            //System.out.println(""); //TODO
+            
         } else if (args.length == 2) {
             assis = Integer.parseInt(args[0]);
             exams = Integer.parseInt(args[1]);
@@ -225,7 +220,7 @@ public class Professor {
         prof.divide(exams, assis);
         //initialization phase
         prof.initialize();
-        //do the actual work of
+        //do the actual work 
         prof.run();
         
     }
@@ -239,16 +234,16 @@ public class Professor {
         
             while (waitingAssistants.getN() < getAssistants().size()) {
                 if (!finalstack.isEmpty()) {
-                    Exam e = finalstack.removeFirst(); // take the first exam of the final stack
-                    e.finish();         		// FINISH HIM!...ehm...it.
+                    Exam e = finalstack.removeFirst(); // take the first exam of the final stack [MARK 1]
+                    e.finish();         				// finish it [MARK 2]
                                            
                 }
-                redistribute();				// from time to time even out stacks
+                redistribute();						// from time to time even out stacks [MARK 3]
 
             }
 
-            // interrupt all assistants so noone has an exam in their hand 
-            System.out.println("Interrupting assistants...");
+            // interrupt all assistants so noone has an exam in their hand [MARK 4]
+            // System.out.println("Interrupting assistants...");
             for (int i = 0; i < threads.length; i++) {
                 Thread t = threads[i];
                 //this makes sure that we don't interrupt an assistant while he pushes or pops an exam,
@@ -258,8 +253,8 @@ public class Professor {
                 stacks[i - 1 >= 0 ? i - 1 : numberAssistants - 1].returnAssiLock();
             }
 
-            System.out.println("Waiting for assistants to be interrupted... (Creating Latch)");
-            // using a latch to make sure that every assistant is actually interrupted before proceeding
+            // System.out.println("Waiting for assistants to be interrupted... (Creating Latch)");
+            // using a latch to make sure that every assistant is actually interrupted before proceeding [MARK 5]
             try {
                 latch.await();
                 Professor.waitingAssistants.setN(0);
@@ -268,8 +263,8 @@ public class Professor {
             }
 
             // we assume that no exams are left -> we can terminate
-            done(true);
-            System.out.println("Checking stacks for missed exams...");
+            done(true); // [MARK 6]
+            // System.out.println("Checking stacks for missed exams...");
             for (int i = 0; i < stacks.length; i++) {
                 // if we find an exam, we were wrong and work is not done yet
                 if (!stacks[i].isEmpty()) {
@@ -281,8 +276,8 @@ public class Professor {
             // latch has been used, get a new one
             latch = new CountDownLatch(numberAssistants);
 
-            System.out.println("Work done: " + shouldTerminate() + ". Waking up assistants...");
-            // wake up threads so they can check whether work is done or not
+            // System.out.println("Work done: " + shouldTerminate() + ". Notifying assistants...");
+            // notify threads so they can check whether work is done or not [MARK 7]
             for (Assistant a : assistants) {
                 synchronized (a) {
                     a.notifyAll();
@@ -290,8 +285,8 @@ public class Professor {
 
             }
 
-            System.out.println("Finishing left exams...");
-            // if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet
+            // System.out.println("Finishing left exams...");
+            // if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet [MARK 8]
             if (shouldTerminate()) {
                 while (!finalstack.isEmpty()) {
                     Exam e = finalstack.removeFirst();
@@ -301,8 +296,8 @@ public class Professor {
 
         }
 
-        System.out.println("Work is done. Waiting for assistants to terminate...");
-        // when the professor wants to terminate, wait for other threads to terminate first
+        // System.out.println("Work is done. Waiting for assistants to terminate...");
+        // when the professor wants to terminate, wait for other threads to terminate first [MARK 9]
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -311,7 +306,7 @@ public class Professor {
         latch = new CountDownLatch(numberAssistants);
         
 
-        //reset static variables so that multible runs don't create problems
+        //reset static variables so that multiple runs don't create problems
         waitingAssistants.setN(0);
       
    

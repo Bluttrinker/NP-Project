@@ -43,11 +43,11 @@ public class Assistant implements Runnable {
             		e.correct(assignedExercise);
             		
             		if(e.isCorrected()){
-            			prof.pushFinalStack(e);
+            			prof.pushFinalStack(e); // [MARK 1]
             		}
             		
                 	else{
-                	left.assiPush(e);
+                	left.assiPush(e);			// [MARK 2]
                 	}
                 
                 

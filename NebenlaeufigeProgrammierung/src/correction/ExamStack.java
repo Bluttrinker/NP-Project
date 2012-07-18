@@ -88,8 +88,8 @@ public class ExamStack {
             	}
             }
         }
-        //ok, the stack is not empty and we have the lock, so take an element!
-        exam = assiStack.remove(0);
+        //ok, the stack is not empty and we have the lock, so take an element! [MARK 1]
+        exam = assiStack.remove(0); 
         }finally{
          try{
               assiLock.unlock(); 
@@ -100,7 +100,7 @@ public class ExamStack {
              
         }
         if(exam!=null)
-            return exam;
+            return exam; // [MARK 2]
         //this case should not happen.
         throw new IllegalStateException("Somehow we didn't get an exam even though we where not interrupted");
     }
@@ -149,7 +149,7 @@ public class ExamStack {
         assiLock.lock();
         profLock.lock();
         try{
-            //if both are empty, skip the rest.
+            //if both are empty, skip the rest. [MARK 3]
             if(!assiStack.isEmpty() || !profStack.isEmpty()){
                 if(assiStack.isEmpty()){
                     //ok, so assi Stack is empty, prof Stack not.
@@ -159,7 +159,7 @@ public class ExamStack {
                 }else{
                     // is prof stack empty then?
                     if(!profStack.isEmpty())
-                        //so both stacks are not empty, nothing to do here
+                        //so both stacks are not empty, nothing to do here [MARK 4]
                     	return;
                     //ok, so prof stack is empty, but assi stack is not.
                     //put all elements on the prof stack
