@@ -294,6 +294,7 @@ public class Professor {
                 while (!prof.finalstack.isEmpty()) {
                     Exam e = prof.finalstack.removeFirst();
                     e.finish();
+                    examCounter++;
                 }
             }
 
@@ -315,6 +316,9 @@ public class Professor {
         //reset static variables so that multible runs don't create problems
         waitingAssistants.setN(0);
         System.out.println("Prof finished "+examCounter+" Exams.");
+        if(examCounter!=exams){
+            System.err.println("Exams got lost or where added!");
+        }
         //       //<editor-fold defaultstate="collapsed" desc="sysout for examstacks">
        // System.out.println("His exam Stack: " + prof.finalstack);
         //        System.out.println("Rest of the exam stacks: ");
