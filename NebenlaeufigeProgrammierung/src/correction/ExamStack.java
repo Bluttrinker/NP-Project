@@ -161,12 +161,12 @@ public class ExamStack {
                 }else{
                     //then prof stack must be empty, check this!
                     if(!profStack.isEmpty())
+                        //so both stacks are not empty, nothing to do here
                     	return;
-                        //throw new IllegalArgumentException("One of the two stacks has to be empty!"); TODO: actually, thats ok now 
                     //ok, so prof stack is empty, but assi stack is not.
                     //put all elements on the prof stack
-                    profStack.addAll(assiStack);
-                    assiStack.clear();
+                    profStack= assiStack;
+                    assiStack = new LinkedList<Exam>();
                     //now put some back on the assiStack
                     fillAssiStack();           
                     
@@ -194,8 +194,10 @@ public class ExamStack {
             while (movedElements<BUFFER_SIZE && iter.hasNext()) {
                 Exam e = (Exam) iter.next();
                 assiStack.add(e);
+                iter.remove();
+                movedElements++;
             }
-            profStack.removeAll(assiStack);
+           // profStack.removeAll(assiStack);
         } finally {
             assiLock.unlock();
             profLock.unlock();
@@ -236,5 +238,14 @@ public class ExamStack {
     		profLock.unlock();
     	}
     	return n;
+    }
+    
+    @Override
+    public String toString(){
+        return "Assistant Stack: "+assiStack.toString()+"\nProfessor Stack: "
+                + profStack.toString();
+        
+        
+        
     }
 }

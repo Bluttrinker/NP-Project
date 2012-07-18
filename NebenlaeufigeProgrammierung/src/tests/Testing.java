@@ -5,6 +5,7 @@
 package tests;
 
 import correction.Professor;
+import java.io.IOException;
 
 /**
  *
@@ -15,19 +16,58 @@ public class Testing {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
        String[] arguments = new String[2];
-
-       arguments[0]= "3";
-       arguments[1]= "70";
+       //System.in.read();
+       arguments[0]= "5";
+       arguments[1]= "100";
        System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
-        for(int i=0; i<=400; i++){
+        for(int i=0; i<=1000; i++){
 
             System.out.println("run nr"+i);
               Professor.main(arguments);
               
         }
       
+        arguments[0]= "5";
+       arguments[1]= "1000";
+       System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
+        for(int i=0; i<=50; i++){
+
+            System.out.println("run nr"+i);
+              Professor.main(arguments);
+              
+        }
+        
+        arguments[0]= "4";
+       arguments[1]= "1000";
+       System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
+        for(int i=0; i<=50; i++){
+
+            System.out.println("run nr"+i);
+              Professor.main(arguments);
+              
+        }
+        
+        arguments[0]= "10";
+       arguments[1]= "50";
+       System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
+        for(int i=0; i<=1000; i++){
+
+            System.out.println("run nr"+i);
+              Professor.main(arguments);
+              
+        }
+        
+        arguments[0]= "7";
+       arguments[1]= "135";
+       System.out.println("Test run with "+arguments[0]+" exercises and "+arguments[1]+ " exams.");
+        for(int i=0; i<=1000; i++){
+
+            System.out.println("run nr"+i);
+              Professor.main(arguments);
+              
+        }
         
         
     }
