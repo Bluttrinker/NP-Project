@@ -5,6 +5,7 @@
 package correction;
 
 import java.util.*;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -21,7 +22,7 @@ public class Professor {
     private final float distributionFrequency = 1.0f; 
     private int distributionCounter;
     private ExamStack[] stacks;
-    private Deque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
+    private BlockingDeque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
     private Thread[] threads;
     private int numberAssistants;
     
@@ -195,17 +196,21 @@ public class Professor {
     /**
      * @author Robin Burghartz, Immo Stanke
      * @param args
+     * @throws InterruptedException if the professor gets interrupted, this
+     * is not allowed.
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
 
         int assis, exams;
         long runtime = System.currentTimeMillis();
 
         if (args.length == 0) {
-
+                
         	// without arguments, use default values
             assis = 5;
             exams = 1000;
+            System.out.println("Using default values: "+assis+" exercises and "+exams+" exams.");
+            System.out.println("To use other values, call Program with arguments [numberOfExercises] [numberOfExams]");
             
         } else if (args.length == 2) {
             assis = Integer.parseInt(args[0]);
@@ -226,18 +231,19 @@ public class Professor {
     }
 
     
-    private void run(){
+    private void run() throws InterruptedException{
         // as long as work is not done yet, do this
         while (!shouldTerminate()) {
 
             // as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
         
             while (waitingAssistants.getN() < getAssistants().size()) {
-                if (!finalstack.isEmpty()) {
-                    Exam e = finalstack.removeFirst(); // take the first exam of the final stack [MARK 1]
+                
+                    
+                    Exam e = finalstack.takeFirst(); // take the first exam of the final stack [MARK 1]
                     e.finish();         				// finish it [MARK 2]
                                            
-                }
+                
                 redistribute();						// from time to time even out stacks [MARK 3]
 
             }
