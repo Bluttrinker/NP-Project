@@ -25,9 +25,11 @@ public class Professor {
     private BlockingDeque<Exam> finalstack = new LinkedBlockingDeque<Exam>();
     private Thread[] threads;
     private int numberAssistants;
+
     
 
     public Professor(int assis, int exams) {
+
         this.numberAssistants=assis;
         this.latch = new CountDownLatch(assis);
         this.assistants = new LinkedList<Assistant>();
@@ -234,21 +236,70 @@ public class Professor {
     private void run() throws InterruptedException{
         // as long as work is not done yet, do this
         while (!shouldTerminate()) {
-
+          //  System.out.println("Starting while loop: "+ shouldTerminate());
+            
             // as soon as all assistants are waiting, this loop will be quit and the professor will check if work is really done
         
             while (waitingAssistants.getN() < getAssistants().size()) {
                 
-                    
-                    Exam e = finalstack.takeFirst(); // take the first exam of the final stack [MARK 1]
-                    e.finish();         				// finish it [MARK 2]
-                                           
-                
                 redistribute();						// from time to time even out stacks [MARK 3]
 
+               
+                        //check if the finalstack is currently empty.
+                        if(finalstack.isEmpty()){
+                            //finalstack is empty. To avoid useless Assistant interruption,
+                            //we check if the exam stacks are empty.
+                            if(stacksNotEmpty()){
+                                //the exam stacks where not all empty, so we can not have a deadlock.
+                            Exam e = finalstack.takeFirst();
+                            e.finish();   
+                            }else{
+                                //the exam stacks where all empty, so check if we should terminate.
+                                //this will also set ShouldTerminate accordingly. If ShouldTerminate was
+                                //not set, we can not have a deadlock and wait for the exam to arrive on the finalstack.
+                                //System.out.println("Testing for termination:");
+                                testForTermination();
+                                //System.out.println("We should terminate: "+ shouldTerminate());
+                                if (!shouldTerminate()){
+                                 // System.out.println("taking next exam");
+                                    Exam e = finalstack.takeFirst();
+                                    e.finish();
+                                }else{
+                                    break;
+                                }
+                            }
+                        }else{
+                            Exam e = finalstack.takeFirst();
+                            e.finish();
+                        }
+                  
             }
+               testForTermination();
+           
 
-            // interrupt all assistants so noone has an exam in their hand [MARK 4]
+        }
+
+        // System.out.println("Work is done. Waiting for assistants to terminate...");
+        // when the professor wants to terminate, wait for other threads to terminate first [MARK 9]
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new IllegalStateException();
+        }
+        latch = new CountDownLatch(numberAssistants);
+        
+
+        //reset static variables so that multiple runs don't create problems
+        waitingAssistants.setN(0);
+      
+   
+    }
+    
+    private void testForTermination(){
+        if (shouldTerminate())
+            return;
+        
+         // interrupt all assistants so noone has an exam in their hand [MARK 4]
             // System.out.println("Interrupting assistants...");
             for (int i = 0; i < threads.length; i++) {
                 Thread t = threads[i];
@@ -293,30 +344,21 @@ public class Professor {
 
             // System.out.println("Finishing left exams...");
             // if the assistants have done their work, the professor might still have to finish some exams, we cannot terminate just yet [MARK 8]
+            // since this is only done if we should terminate anyways, there are no new exams
+            // left that would be put on the finalstack, so we can just finish the last ones
+            // in a sequential manner and don't have to mind concurrent access to the finalstack
+            // anymore.
             if (shouldTerminate()) {
                 while (!finalstack.isEmpty()) {
                     Exam e = finalstack.removeFirst();
                     e.finish();                 
                 }
             }
-
-        }
-
-        // System.out.println("Work is done. Waiting for assistants to terminate...");
-        // when the professor wants to terminate, wait for other threads to terminate first [MARK 9]
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            throw new IllegalStateException();
-        }
-        latch = new CountDownLatch(numberAssistants);
         
-
-        //reset static variables so that multiple runs don't create problems
-        waitingAssistants.setN(0);
-      
-   
+        
+        
     }
+    
     
     // getters and setters
     public CountDownLatch getLatch() {
@@ -349,5 +391,14 @@ public class Professor {
 
     public void pushFinalStack(Exam e) {
         finalstack.addLast(e);
+    }
+
+    private boolean stacksNotEmpty() {
+        for(ExamStack e: stacks){
+            if(!e.isEmpty())
+                return true;
+        }
+        return false;
+        
     }
 }
