@@ -1,0 +1,19 @@
+\select@language {german}
+\contentsline {section}{\numberline {1}Die Klasse Professor}{2}
+\contentsline {subsection}{\numberline {1.1}Die Initialisierungsphase}{2}
+\contentsline {subsection}{\numberline {1.2}Die Hauptphase}{2}
+\contentsline {subsubsection}{\numberline {1.2.1}Die Endkontrolle der Klausur}{2}
+\contentsline {subsubsection}{\numberline {1.2.2}Das Umverteilen der Klausuren}{2}
+\contentsline {subsection}{\numberline {1.3}Die Terminierungsphase}{3}
+\contentsline {section}{\numberline {2}Die Klasse Assistant}{5}
+\contentsline {section}{\numberline {3}Die Klasse Exam}{6}
+\contentsline {section}{\numberline {4}Die Klasse ExamStack}{7}
+\contentsline {subsection}{\numberline {4.1}Das generelle Konzept}{7}
+\contentsline {subsection}{\numberline {4.2}Die Methoden des AssisStacks}{7}
+\contentsline {subsection}{\numberline {4.3}Die Methoden des ProfStacks}{8}
+\contentsline {subsection}{\numberline {4.4}Die interne Umverteilung der Klausuren}{8}
+\contentsline {section}{\numberline {5}Die Klasse IdleAssistantsCounter}{9}
+\contentsline {section}{\numberline {6}Behobene Probleme seit dem letzten Review}{10}
+\contentsline {subsection}{\numberline {6.1}M\IeC {\"o}gliche Speicherinkonsistenz im Exam}{10}
+\contentsline {subsection}{\numberline {6.2}Das Busy-wait im Professor}{10}
+\contentsline {subsection}{\numberline {6.3}Die Doku}{11}
