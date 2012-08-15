@@ -15,5 +15,5 @@
 \contentsline {section}{\numberline {5}Die Klasse IdleAssistantsCounter}{9}
 \contentsline {section}{\numberline {6}Behobene Probleme seit dem letzten Review}{10}
 \contentsline {subsection}{\numberline {6.1}M\IeC {\"o}gliche Speicherinkonsistenz im Exam}{10}
-\contentsline {subsection}{\numberline {6.2}Das Busy-wait im Professor}{10}
-\contentsline {subsection}{\numberline {6.3}Die Doku}{11}
+\contentsline {subsection}{\numberline {6.2}Das Busy-wait im Professor}{11}
+\contentsline {subsection}{\numberline {6.3}Die Dokumentation}{12}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.6.5)  15 AUG 2012 15:10
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.6.5)  15 AUG 2012 21:01
 entering extended mode
  %&-line parsing enabled.
 **"Doku latex.tex"
@@ -150,9 +150,6 @@ File: ucsencs.def 2003/11/29 Fixes to fontencodings LGR, T3
 (/usr/share/texmf-texlive/tex/latex/ucs/data/uni-0.def
 File: uni-0.def 2004/10/17 UCS: Unicode data U+0000..U+00FF
 )
-(/usr/share/texmf-texlive/tex/latex/ucs/data/uni-32.def
-File: uni-32.def 2004/10/17 UCS: Unicode data U+2000..U+20FF
-)
 LaTeX Font Info:    Try loading font information for U+msa on input line 12.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
@@ -162,15 +159,12 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 12.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-
-LaTeX Warning: No \author given.
-
-(./Doku latex.toc)
+) (./Doku latex.toc)
 \tf@toc=\write3
 \openout3 = `"Doku latex.toc"'.
 
- [1
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 Overfull \hbox (1.02504pt too wide) in paragraph at lines 33--39
@@ -178,59 +172,105 @@ Overfull \hbox (1.02504pt too wide) in paragraph at lines 33--39
 e Klausuren
  []
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 42--45
+[2] (/usr/share/texmf-texlive/tex/latex/ucs/data/uni-32.def
+File: uni-32.def 2004/10/17 UCS: Unicode data U+2000..U+20FF
+)
+Overfull \hbox (16.98415pt too wide) in paragraph at lines 42--46
+\OT1/cmr/m/n/12 aus. Dieses Counter-Objekt ist eine In-stanz der Klasse \OT1/cm
+r/bx/n/12 Idle-As-sis-tantsCounter\OT1/cmr/m/n/12 .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 42--46
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--48
+Underfull \hbox (badness 10000) in paragraph at lines 42--46
 
  []
 
 [3] [4] [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 74--76
+Overfull \hbox (0.41505pt too wide) in paragraph at lines 72--75
+\OT1/cmr/bx/n/12 public Ex-am as-siPop()\OT1/cmr/m/n/12 : Wird vom As-sis-ten-t
+en ver-wen-det, um eine Klausur
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--75
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 74--76
+Underfull \hbox (badness 10000) in paragraph at lines 78--81
 
  []
 
 [7]
-Overfull \hbox (12.30614pt too wide) in paragraph at lines 87--95
-\OT1/cmr/m/n/12 public void dis-tribute(): Verteilt die Klausuren auf die in-te
-r-nen Stapel. Zun[]achst
+Overfull \hbox (5.43825pt too wide) in paragraph at lines 84--89
+\OT1/cmr/m/n/12 Generell ist der Zweck von \OT1/cmr/bx/n/12 dis-tribute() \OT1/
+cmr/m/n/12 al-so, im-mer m[]oglichst viele Klausuren
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--95
+Underfull \hbox (badness 10000) in paragraph at lines 84--89
 
  []
 
 
-Overfull \hbox (0.1542pt too wide) in paragraph at lines 87--95
+Overfull \hbox (0.1542pt too wide) in paragraph at lines 84--89
 \OT1/cmr/m/n/12 er), geht mit einem It-er-a-tor []uber den prof-S-tack und vert
 eilt so viele Klausuren
  []
 
-[8] [9] [10] [11] (./Doku latex.aux) ) 
+[8] [9]
+Overfull \hbox (29.30975pt too wide) in paragraph at lines 100--100
+[][]\OT1/cmr/m/n/10 Zitiert nach: http://docs.oracle.com/javase/tutorial/essent
+ial/concurrency/memconsist.html| 
+ []
+
+
+Overfull \hbox (20.08752pt too wide) in paragraph at lines 102--102
+[][]\OT1/cmr/m/n/10 Zitiert nach: http://docs.oracle.com/javase/tutorial/essent
+ial/concurrency/syncmeth.html| 
+ []
+
+
+Overfull \hbox (0.32182pt too wide) in paragraph at lines 99--105
+\OT1/cmr/m/n/12 Einige Durchl[]aufe (ca. 10000) mit ver-schiede-nen An-zahlen v
+on Ex-a-m-en (zwis-
+ []
+
+[10] [11]
+Overfull \hbox (6.8472pt too wide) in paragraph at lines 116--117
+\OT1/cmr/m/n/12 wir aufge-brochen, in dem wir eine sin-nvolle Ein-teilung in Ab
+-schnitte vorgenom-
+ []
+
+
+Overfull \hbox (5.47586pt too wide) in paragraph at lines 116--117
+\OT1/cmr/m/n/12 (z.B. Initialisierungs-, Haupt- und Ter-minierungsphase im Pro-
+fes-sor). Dadurch
+ []
+
+[12] (./Doku latex.aux) ) 
 Here is how much of TeX's memory you used:
- 2504 strings out of 495061
- 29793 string characters out of 1182622
+ 2512 strings out of 495061
+ 29874 string characters out of 1182622
  84871 words of memory out of 3000000
- 5684 multiletter control sequences out of 15000+50000
- 12403 words of font info for 48 fonts, out of 3000000 for 9000
+ 5690 multiletter control sequences out of 15000+50000
+ 13048 words of font info for 51 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 27i,6n,24p,1076b,589s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfont
-s/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.p
-fb>
-Output written on "Doku latex.pdf" (11 pages, 74380 bytes).
+ 27i,8n,24p,1178b,589s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/
+cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/shar
+e/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-texl
+ive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/typ
+e1/public/amsfonts/cm/cmr8.pfb>
+Output written on "Doku latex.pdf" (12 pages, 106783 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
+ 65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

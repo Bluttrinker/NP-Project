@@ -1,0 +1,310 @@
+run:
+Test run with 5 exercises and 100 exams.
+run nr0
+Finished in: 1804 milliseconds.
+run nr1
+Finished in: 1384 milliseconds.
+run nr2
+Finished in: 1834 milliseconds.
+run nr3
+Finished in: 1935 milliseconds.
+run nr4
+Finished in: 1364 milliseconds.
+run nr5
+Finished in: 2429 milliseconds.
+run nr6
+Finished in: 2684 milliseconds.
+run nr7
+Finished in: 1959 milliseconds.
+run nr8
+Finished in: 2137 milliseconds.
+run nr9
+Finished in: 1950 milliseconds.
+run nr10
+Finished in: 2111 milliseconds.
+run nr11
+Finished in: 2113 milliseconds.
+run nr12
+Finished in: 2121 milliseconds.
+run nr13
+Finished in: 1723 milliseconds.
+run nr14
+Finished in: 2026 milliseconds.
+run nr15
+Finished in: 3017 milliseconds.
+run nr16
+Finished in: 1819 milliseconds.
+run nr17
+Finished in: 2340 milliseconds.
+run nr18
+Finished in: 2361 milliseconds.
+run nr19
+Finished in: 2114 milliseconds.
+run nr20
+Finished in: 1690 milliseconds.
+run nr21
+Finished in: 1727 milliseconds.
+run nr22
+Finished in: 2554 milliseconds.
+run nr23
+Finished in: 1870 milliseconds.
+run nr24
+Finished in: 1515 milliseconds.
+run nr25
+Finished in: 2528 milliseconds.
+run nr26
+Finished in: 2242 milliseconds.
+run nr27
+Finished in: 1966 milliseconds.
+run nr28
+Finished in: 1983 milliseconds.
+run nr29
+Finished in: 1870 milliseconds.
+run nr30
+Finished in: 976 milliseconds.
+run nr31
+Finished in: 1273 milliseconds.
+run nr32
+Finished in: 2063 milliseconds.
+run nr33
+Finished in: 1848 milliseconds.
+run nr34
+Finished in: 1540 milliseconds.
+run nr35
+Finished in: 1637 milliseconds.
+run nr36
+Finished in: 1919 milliseconds.
+run nr37
+Finished in: 2392 milliseconds.
+run nr38
+Finished in: 1765 milliseconds.
+run nr39
+Finished in: 2039 milliseconds.
+run nr40
+Finished in: 2429 milliseconds.
+run nr41
+Finished in: 1582 milliseconds.
+run nr42
+Finished in: 1272 milliseconds.
+run nr43
+Finished in: 1387 milliseconds.
+run nr44
+Finished in: 2224 milliseconds.
+run nr45
+Finished in: 1652 milliseconds.
+run nr46
+Finished in: 1959 milliseconds.
+run nr47
+Finished in: 1702 milliseconds.
+run nr48
+Finished in: 2885 milliseconds.
+run nr49
+Finished in: 1294 milliseconds.
+run nr50
+Finished in: 2245 milliseconds.
+run nr51
+Finished in: 2002 milliseconds.
+run nr52
+Finished in: 2463 milliseconds.
+run nr53
+Finished in: 2099 milliseconds.
+run nr54
+Finished in: 1907 milliseconds.
+run nr55
+Finished in: 2240 milliseconds.
+run nr56
+Finished in: 2384 milliseconds.
+run nr57
+Finished in: 2048 milliseconds.
+run nr58
+Finished in: 2008 milliseconds.
+run nr59
+Finished in: 2117 milliseconds.
+run nr60
+Finished in: 2448 milliseconds.
+run nr61
+Finished in: 1258 milliseconds.
+run nr62
+Finished in: 1874 milliseconds.
+run nr63
+Finished in: 2090 milliseconds.
+run nr64
+Finished in: 1612 milliseconds.
+run nr65
+Finished in: 1860 milliseconds.
+run nr66
+Finished in: 867 milliseconds.
+run nr67
+Finished in: 1610 milliseconds.
+run nr68
+Finished in: 1815 milliseconds.
+run nr69
+Finished in: 1926 milliseconds.
+run nr70
+Finished in: 2605 milliseconds.
+run nr71
+Finished in: 2513 milliseconds.
+run nr72
+Finished in: 2226 milliseconds.
+run nr73
+Finished in: 2149 milliseconds.
+run nr74
+Finished in: 2088 milliseconds.
+run nr75
+Finished in: 2421 milliseconds.
+run nr76
+Finished in: 1852 milliseconds.
+run nr77
+Finished in: 2798 milliseconds.
+run nr78
+Finished in: 2026 milliseconds.
+run nr79
+Finished in: 2208 milliseconds.
+run nr80
+Finished in: 2068 milliseconds.
+run nr81
+Finished in: 2176 milliseconds.
+run nr82
+Finished in: 1750 milliseconds.
+run nr83
+Finished in: 1729 milliseconds.
+run nr84
+Finished in: 2353 milliseconds.
+run nr85
+Finished in: 1670 milliseconds.
+run nr86
+Finished in: 2097 milliseconds.
+run nr87
+Finished in: 2420 milliseconds.
+run nr88
+Finished in: 1212 milliseconds.
+run nr89
+Finished in: 1922 milliseconds.
+run nr90
+Finished in: 2363 milliseconds.
+run nr91
+Finished in: 2213 milliseconds.
+run nr92
+Finished in: 1894 milliseconds.
+run nr93
+Finished in: 1833 milliseconds.
+run nr94
+Finished in: 1909 milliseconds.
+run nr95
+Finished in: 1941 milliseconds.
+run nr96
+Finished in: 1770 milliseconds.
+run nr97
+Finished in: 2184 milliseconds.
+run nr98
+Finished in: 1960 milliseconds.
+run nr99
+Finished in: 1942 milliseconds.
+run nr100
+Finished in: 2199 milliseconds.
+Finished 100 Runs. Average Time per run: 2003milliseconds
+Test run with 5 exercises and 1000 exams.
+run nr0
+Finished in: 19249 milliseconds.
+run nr1
+Finished in: 17137 milliseconds.
+run nr2
+Finished in: 18421 milliseconds.
+run nr3
+Finished in: 20091 milliseconds.
+run nr4
+Finished in: 15229 milliseconds.
+run nr5
+Finished in: 18396 milliseconds.
+run nr6
+Finished in: 19794 milliseconds.
+run nr7
+Finished in: 16725 milliseconds.
+run nr8
+Finished in: 12211 milliseconds.
+run nr9
+Finished in: 15614 milliseconds.
+run nr10
+Finished in: 19604 milliseconds.
+run nr11
+Finished in: 16825 milliseconds.
+run nr12
+Finished in: 14940 milliseconds.
+run nr13
+Finished in: 19774 milliseconds.
+run nr14
+Finished in: 19191 milliseconds.
+run nr15
+Finished in: 14390 milliseconds.
+run nr16
+Finished in: 17641 milliseconds.
+run nr17
+Finished in: 20255 milliseconds.
+run nr18
+Finished in: 23763 milliseconds.
+run nr19
+Finished in: 20254 milliseconds.
+run nr20
+Finished in: 18688 milliseconds.
+run nr21
+Finished in: 19989 milliseconds.
+run nr22
+Finished in: 17340 milliseconds.
+run nr23
+Finished in: 18042 milliseconds.
+run nr24
+Finished in: 18891 milliseconds.
+run nr25
+Finished in: 17048 milliseconds.
+run nr26
+Finished in: 24210 milliseconds.
+run nr27
+Finished in: 22424 milliseconds.
+run nr28
+Finished in: 19490 milliseconds.
+run nr29
+Finished in: 14338 milliseconds.
+run nr30
+Finished in: 16845 milliseconds.
+run nr31
+Finished in: 20218 milliseconds.
+run nr32
+Finished in: 19458 milliseconds.
+run nr33
+Finished in: 23867 milliseconds.
+run nr34
+Finished in: 17719 milliseconds.
+run nr35
+Finished in: 25874 milliseconds.
+run nr36
+Finished in: 17510 milliseconds.
+run nr37
+Finished in: 19347 milliseconds.
+run nr38
+Finished in: 17605 milliseconds.
+run nr39
+Finished in: 19450 milliseconds.
+run nr40
+Finished in: 12737 milliseconds.
+run nr41
+Finished in: 12929 milliseconds.
+run nr42
+Finished in: 18617 milliseconds.
+run nr43
+Finished in: 17078 milliseconds.
+run nr44
+Finished in: 21578 milliseconds.
+run nr45
+Finished in: 27427 milliseconds.
+run nr46
+Finished in: 14335 milliseconds.
+run nr47
+Finished in: 21474 milliseconds.
+run nr48
+Finished in: 20698 milliseconds.
+run nr49
+Finished in: 16393 milliseconds.
+run nr50
+Finished in: 15845 milliseconds.
+Finished 50 Runs. Average Time per run: 18939milliseconds
+BUILD SUCCESSFUL (total time: 19 minutes 7 seconds)
