@@ -6,6 +6,7 @@ package correction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -17,28 +18,30 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ExamStack {
 
-    private ArrayList<Exam> assiStack;
+    private LinkedList<Exam> assiStack;
     private final Lock assiLock = new ReentrantLock();
     private final Condition assiStackNotEmpty;
-    private ArrayList<Exam> profStack;
+    private LinkedList<Exam> profStack;
     private final Lock profLock = new ReentrantLock();
     
     private final int BUFFER_SIZE = 5;
 
+   
     /**
      * Creates a new ExamStack filled with the list of exams given in the
      * constructor
      *
      * @param initialExams The Exams initially contained by this ExamStack.
      */
-    public ExamStack(ArrayList<Exam> initialExams) {
+    public ExamStack(LinkedList<Exam> initialExams) {
         super();
         this.assiStack = initialExams;
         //I want my diamond operator back...
-        this.profStack = new ArrayList<Exam>();
+        this.profStack = new LinkedList<Exam>();
         assiStackNotEmpty = assiLock.newCondition();
     }
 
+   
     /**
      * Puts an exam on the ExamStack. This method is to be used by the
      * Assistants
@@ -55,9 +58,10 @@ public class ExamStack {
         } finally {
             assiLock.unlock();
         }
-
+        
     }
 
+   
     /**Takes an exam from the step and returns it
      * this method is to be called from the Assistants
      * 
@@ -71,25 +75,32 @@ public class ExamStack {
         try{
         while (assiStack.isEmpty()) {
             //Maybe there is still something on the profstack
-            assiLock.unlock();
             distribute();
-            assiLock.lock();
             //Is it still empty?
             if (assiStack.isEmpty()) //Wait for the stack to be not empty
-            {                
+            {    
             	Professor.waitingAssistants.increment();
+            	try{
                 assiStackNotEmpty.await();
+            	}
+            	finally{
                 Professor.waitingAssistants.decrement();
+            	}
             }
         }
-        //ok, the stack is not empty and we have the lock, so take an element!
-        exam = assiStack.remove(0);
+        //ok, the stack is not empty and we have the lock, so take an element! [MARK 1]
+        exam = assiStack.remove(0); 
         }finally{
-          assiLock.unlock();  
+         try{
+              assiLock.unlock(); 
+         }catch(IllegalMonitorStateException e){
+             System.out.println("illegalmonitorexception in AssiPop!");
+             //it's ok, we never had the lock, so we don't need to give it back.
+         }
+             
         }
-        //we removed the exam, we can now give back the lock
         if(exam!=null)
-            return exam;
+            return exam; // [MARK 2]
         //this case should not happen.
         throw new IllegalStateException("Somehow we didn't get an exam even though we where not interrupted");
     }
@@ -112,7 +123,7 @@ public class ExamStack {
         try{
             if(profStack.isEmpty()){
                 profLock.unlock();
-                distribute();
+                distribute();          
                 profLock.lock();
             }
                 
@@ -121,31 +132,39 @@ public class ExamStack {
                 //for prof the order doesn't matter since he iterates anyways.
                 exam = profStack.remove(profStack.size()-1);
         }finally{
-            profLock.unlock();
+        	try{
+            profLock.unlock();   
+        	}
+        	catch(IllegalMonitorStateException m){
+        		
+        	}
         }
         //Give this back, if it is null the prof knows he saw (almost) the entire stack
         return exam;
     }
 
-    private void distribute() {
+    
+    public void distribute() {  
         //We need both locks!
         assiLock.lock();
         profLock.lock();
         try{
-            //if both are empty, skip the rest.
+            //if both are empty, skip the rest. [MARK 3]
             if(!assiStack.isEmpty() || !profStack.isEmpty()){
                 if(assiStack.isEmpty()){
                     //ok, so assi Stack is empty, prof Stack not.
                     //put some elements on the assiStack.
                     fillAssiStack();
+                    
                 }else{
-                    //then prof stack must be empty, check this!
+                    // is prof stack empty then?
                     if(!profStack.isEmpty())
-                        throw new IllegalArgumentException("One of the two stacks has to be empty!");
+                        //so both stacks are not empty, nothing to do here [MARK 4]
+                    	return;
                     //ok, so prof stack is empty, but assi stack is not.
                     //put all elements on the prof stack
-                    profStack = assiStack;
-                    assiStack.clear();
+                    profStack= assiStack;
+                    assiStack = new LinkedList<Exam>();
                     //now put some back on the assiStack
                     fillAssiStack();           
                     
@@ -155,21 +174,33 @@ public class ExamStack {
             
         }finally{
             //give locks back no matter what
+            assiStackNotEmpty.signalAll();
             assiLock.unlock();
             profLock.unlock();
         }
         
-    
+
         
     }
-    private void fillAssiStack(){    
-        int movedElements =0;
-                    Iterator iter = profStack.iterator();
-                    while(movedElements<BUFFER_SIZE && iter.hasNext()){
-                        Exam e = (Exam)iter.next();
-                        assiStack.add(e);                        
-                    }
-                    profStack.removeAll(assiStack);
+    
+    
+    private void fillAssiStack(){ 
+    	assiLock.lock();
+         profLock.lock();
+        try {
+           
+            int movedElements =0;
+            Iterator iter = profStack.iterator();
+            while (movedElements<BUFFER_SIZE && iter.hasNext()) {
+                Exam e = (Exam) iter.next();
+                assiStack.add(e);
+                iter.remove();
+                movedElements++;
+            }
+        } finally {
+            assiLock.unlock();
+            profLock.unlock();
+        }
     }
     
     public void assiLock(){        
@@ -206,5 +237,14 @@ public class ExamStack {
     		profLock.unlock();
     	}
     	return n;
+    }
+    
+    @Override
+    public String toString(){
+        return "Assistant Stack: "+assiStack.toString()+"\nProfessor Stack: "
+                + profStack.toString();
+        
+        
+        
     }
 }

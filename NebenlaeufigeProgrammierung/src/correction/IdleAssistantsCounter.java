@@ -8,19 +8,20 @@ package correction;
  * have a safe monitor object.
  *
  */
-public class IdleAssitantsCounter {
+public class IdleAssistantsCounter {
 
 	private int n;
 	
-	public IdleAssitantsCounter(){
+	public IdleAssistantsCounter(){
 		this.n = 0;
 	}
 	
 	public synchronized void increment(){
-		n++;
+            n++;
 	}
 	
 	public synchronized void decrement(){
+        if(n<=0) throw new IllegalStateException("Counter shall not be smaller then 0");
 		n--;
 	}
 

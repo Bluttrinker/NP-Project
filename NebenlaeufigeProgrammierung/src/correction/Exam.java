@@ -105,7 +105,7 @@ public class Exam {
      * @param exercise The number of the exercise we want to correct. Numbering
      * starts at 1
      */
-    public void correct(int exercise) {
+    public synchronized void correct(int exercise) {
 
 
         //check if is a valid exercise
@@ -146,7 +146,7 @@ public class Exam {
     /**
      * @return true if all exercises of this exam have already been corrected.
      */
-    public boolean isCorrected() {
+    public synchronized boolean isCorrected() {
         for (int i = 0; i < correctedExersise.length; i++) {
             if (!correctedExersise[i]) {
                 return false;
@@ -159,7 +159,7 @@ public class Exam {
      *   
      * @return A list of integers wich are the not yet corrected exersises. Empty list if all are corrected.
      */
-    public List<Integer> exercisesToDo(){
+    public synchronized List<Integer> exercisesToDo(){
         List<Integer> uncorrected = new LinkedList<Integer>();
         for(int i=0; i<correctedExersise.length; i++){
             if(!correctedExersise[i]){

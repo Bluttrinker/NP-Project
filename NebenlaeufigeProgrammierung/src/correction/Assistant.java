@@ -4,9 +4,12 @@
  */
 package correction;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
- * @author bluttrinker
+ * @author Immo Stanke, Robin Burghartz
  */
 public class Assistant implements Runnable {
 
@@ -26,7 +29,7 @@ public class Assistant implements Runnable {
     
     @Override
     public void run() {
-        while(!Professor.shouldTerminate()){
+        while(!prof.shouldTerminate()){
             
         	while(!Thread.interrupted()){
             	Exam e;
@@ -36,16 +39,20 @@ public class Assistant implements Runnable {
             	catch(InterruptedException ex){
             		break;
             	}
-            	
-                e.correct(assignedExercise);
-                if(e.isCorrected()){
-                	prof.pushFinalStack(e);
-                }
-                else {
-                	left.assiPush(e);
-                }
+            	if(e!=null){
+            		e.correct(assignedExercise);
+            		
+            		if(e.isCorrected()){
+            			prof.pushFinalStack(e); // [MARK 1]
+            		}
+            		
+                	else{
+                	left.assiPush(e);			// [MARK 2]
+                	}
+                
                 
             }
+        	}
         	
         	synchronized(this){
             prof.countdownLatch();
@@ -64,4 +71,5 @@ public class Assistant implements Runnable {
         prof.countdownLatch();
     
 }
-}
+    }
+
